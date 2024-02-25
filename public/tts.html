@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <title>TKbot - Chat</title>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/js/tts.js"></script>
+</head>
+
+<body>
+    <button type="button" class="btn btn-danger" id="btn-clear" onclick="cancelTTS();">끊기</button>
+    <audio id="subtts" preload="none">이 브라우저는 &lt;audio&gt; 태그를 지원하지 않습니다.</audio>
+</body>
+</html>

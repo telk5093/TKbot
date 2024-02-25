@@ -1,0 +1,73 @@
+@import url(/css/chat/common.css);
+
+#chatWrap .chat {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin-bottom: 10px;
+	border: 1px solid #616c7a;
+	padding: 4px;
+	background-color: #15191db2;
+}
+#chatWrap .chat:last-child {
+    margin-bottom: 0;
+}
+
+#chatWrap .chat .header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+	box-sizing: border-box;
+	width: 100%;
+	padding: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #e6e6e6;
+	vertical-align: middle;
+}
+#chatWrap .chat .platform {
+    display: none;
+    width: 16px;
+    height: 16px;
+    text-indent: -99999em;
+}
+#chatWrap .chat .platform.chzzk {
+    display: inline-block;
+    margin-right: 5px;
+    background: transparent url(/img/icon-chzzk.png) no-repeat center center;
+    background-size: 16px 16px;
+    vertical-align: middle;
+}
+#chatWrap .chat .platform.youtube {
+    display: inline-block;
+    margin-right: 5px;
+    background: transparent url(/img/icon-youtube.png) no-repeat center center;
+    background-size: 16px 16px;
+    vertical-align: middle;
+}
+#chatWrap .chat .platform.twitch {
+    display: inline-block;
+    margin-right: 5px;
+    background: transparent url(/img/icon-twitch.png) no-repeat center center;
+    background-size: 16px 16px;
+    vertical-align: middle;
+}
+#chatWrap .chat .platform.kick {
+    display: inline-block;
+    margin-right: 5px;
+    background: transparent url(/img/icon-kick.png) no-repeat center center;
+    background-size: 16px 16px;
+    vertical-align: middle;
+}
+#chatWrap .chat .message {
+	box-sizing: border-box;
+    width: 100%;
+	word-break: break-word;
+	max-height: 260px;
+	padding: 10px;
+	font-size: 14px;
+	color: #e6e6e6;
+}

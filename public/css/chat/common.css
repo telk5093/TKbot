@@ -1,0 +1,76 @@
+@charset "utf-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Noto+Sans+KR:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Nanum+Gothic&family=Nanum+Myeongjo&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
+html {
+	/* 송출 소프트웨어의 disable scrollbar 여부에 상관 없이 스크롤바를 나타나지 않게 함 */
+	overflow: hidden;
+}
+
+body {
+	position: absolute;
+	margin: 0;
+    right: 0;
+    left: 0;
+	bottom: 0;
+    zoom: 1.5;
+}
+
+img.twitch_emote {
+    max-height: 50px;
+}
+.dccon {
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	background-repeat: no-repeat;
+	background-size: 100px 100px;
+}
+.dccon img {
+	max-height: 100px;
+}
+
+/* 좌우대칭 효과 */
+.dccon.dcconL {
+	position: relative;
+	margin-right: 50px;
+	width: 50px;
+}
+.dccon.dcconR {
+	position: relative;
+	margin-right: 50px;
+	width: 50px;
+	transform: scaleX(-1);
+    background-position: -50px;
+}
+.dccon.dcconL::after {
+	content: '';
+	position: absolute;
+	right: -50px;
+	width: 50px;
+	height: inherit;
+	transform: scaleX(-1);
+	background-image: inherit;
+	background-size: 100px 100px;
+}
+.dccon.dcconR::after {
+	position: absolute;
+	content: '';
+	left: -50px;
+	width: 50px;
+	height: inherit;
+	transform: scaleX(-1);
+	background-image: inherit;
+	background-size: 100px 100px;
+	background-position: -50px;
+}
+
+/* Magnifying */
+.dccon.dcconM {
+	background-size: 200px 200px;
+	background-position: -50px;
+}
