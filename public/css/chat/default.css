@@ -71,3 +71,7 @@
 	font-size: 14px;
 	color: #e6e6e6;
 }
+#chatWrap .chat .message del {
+    color: #888888;
+    font-style: italic;
+}
