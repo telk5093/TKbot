@@ -1,7 +1,8 @@
+var exports = module.exports = {};
+
 /**
  * requires
  */
-var exports = module.exports = {};
 const lib = require(__dirname + '/../lib/lib.js');
 
 /**
@@ -61,7 +62,7 @@ var findAlias = (msg, alias) => {
  * @param Object data                   Message data object
  * @param function callback             A function to send message
  */
-var response = exports.response = (data, callback, method) => {
+var init = exports.init = (data) => {
     let message = data.message;
 
     // Only response when the message starts with !
@@ -77,7 +78,7 @@ var response = exports.response = (data, callback, method) => {
 
     // Say
     if (t = lib.startWith(message, '!say ')) {
-        callback[method](String(t).trim());
+        data.callback[data.method](String(t).trim());
     }
 
     // Managing response command
@@ -91,13 +92,13 @@ var response = exports.response = (data, callback, method) => {
 
             // Check if it is already exist command
             if (Object.keys(msgResponse).indexOf(commandToAddCmd) >= 0) {
-                callback[method]('"' + commandToAddCmd + '" 명령어를 추가할 수 없습니다! ... 이미 존재하는 명령어입니다');
+                data.callback[data.method]('"' + commandToAddCmd + '" 명령어를 추가할 수 없습니다! ... 이미 존재하는 명령어입니다');
                 return;
             } else {
                 // 파일 쓰기
                 msgResponse[commandToAddCmd] = commandToAddRes;
                 saveResponseData(data.to, msgResponse);
-                callback[method]('"' + commandToAddCmd + '" 명령어가 정상적으로 추가되었습니다.');
+                data.callback[data.method]('"' + commandToAddCmd + '" 명령어가 정상적으로 추가되었습니다.');
             }
 
         // Edit a command
@@ -109,13 +110,13 @@ var response = exports.response = (data, callback, method) => {
 
             // 이미 존재하는 명령어인지 확인
             if (Object.keys(msgResponse).indexOf(commandToAddCmd) < 0) {
-                callback[method]('"' + commandToAddCmd + '" 명령어를 수정할 수 없습니다! ... 존재하지 않는 명령어입니다');
+                data.callback[data.method]('"' + commandToAddCmd + '" 명령어를 수정할 수 없습니다! ... 존재하지 않는 명령어입니다');
                 return;
             } else {
                 // 파일 쓰기
                 msgResponse[commandToAddCmd] = commandToAddRes;
                 saveResponseData(data.to, msgResponse);
-                callback('"' + commandToAddCmd + '" 명령어가 정상적으로 수정되었습니다.');
+                data.callback[data.method]('"' + commandToAddCmd + '" 명령어가 정상적으로 수정되었습니다.');
             }
 
         // Delete a command
@@ -129,7 +130,7 @@ var response = exports.response = (data, callback, method) => {
 
             // 파일 쓰기
             saveResponseData(data.to, msgResponse);
-            callback[method](commandToDelCmd + ' 명령어가 정상적으로 삭제되었습니다.');
+            data.callback[data.method](commandToDelCmd + ' 명령어가 정상적으로 삭제되었습니다.');
         }
     }
 
@@ -137,6 +138,6 @@ var response = exports.response = (data, callback, method) => {
     // 다시 불러오기
     if (lib.isMatch(message, ['!command reload', '!command refresh', '!명령어 새로고침', '!명령어 불러오기'])) {
         msgResponse = loadResponseData(data.to);
-        callback[method]('자동 응답을 다시 불러왔습니다.');
+        data.callback[data.method]('자동 응답을 다시 불러왔습니다.');
     }
 };
