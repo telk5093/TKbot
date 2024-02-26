@@ -3,4 +3,5 @@ logs/
 config/auth.js
 config/config.js
 config/channels.json
+config/channels/*.json
 keys/
