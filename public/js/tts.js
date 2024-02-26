@@ -1,8 +1,8 @@
 var ttsQueue = [];
 const config = {
     tts: {
-		personality_speed: [1.2, 1.4],   // Speed에 관여
-		personality_pitch: [0.9, 1.3],   // Pitch에 관여
+        personality_speed: [1.2, 1.4],   // Speed에 관여
+        personality_pitch: [0.9, 1.3],   // Pitch에 관여
     },
 };
 
