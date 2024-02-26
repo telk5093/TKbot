@@ -17,13 +17,19 @@
 
     // on message
     socket.on('data', function(data) {
+        console.log(data);
         addMessage(data);
+    });
+
+    // on blind
+    socket.on('blind', function(data) {
+        blindMessage(data);
     });
 })();
 
 
 /**
- *
+ * addMessage
  */
 var numChat = 0;
 const numChatMax = 3;
@@ -38,7 +44,10 @@ function addMessage(data) {
         numChat--;
     }
 
-    let chatbox = $('<div class="chat"></div>');
+    let chatbox = $('<div class="chat"></div>')
+        .attr('data-userid', data.userid)
+        .attr('data-time', data.time)
+    ;
     let chatbox_header = $('<div class="header"></div>');
     let chatbox_header_platform = $('<div class="platform"></div>');
     switch (data.platform) {
@@ -70,4 +79,14 @@ function addMessage(data) {
         .fadeOut()
     ;
     chatWrap.append(chatbox);
+}
+
+/**
+ * blindMessage
+ */
+function blindMessage(data) {
+    let chatbox = $('#chatWrap .chat[data-userid="' + data.userid + '"][data-time="' + data.time + '"]');
+    console.log(chatbox);
+    let chatbox_message = chatbox.find('.message');
+    chatbox_message.html('<del>삭제된 메시지</del>');
 }

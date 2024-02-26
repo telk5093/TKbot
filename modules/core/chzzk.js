@@ -41,29 +41,62 @@ exports.init = async () => {
             // chzzkChat.sendChat('test');
         });
         
-        // 재연결 (방송 시작 시)
+        // Reconnect
         chzzkChat.on('reconnect', chatChannelId => {
             console.log('Reconnected to ' + chatChannelId);
         });
+
+        // Blind
+        chzzkChat.on('blind', blind => {
+            /*
+            {
+                messageTime: 1708847757069,
+                blindType: 'CBOTBLIND',
+                blindUserId: null,
+                serviceId: 'game',
+                message: null,
+                userId: 'c6f75be90a32cac61524e91db7648f98',
+                channelId: 'N14we7'
+            }
+            */
+            // Blind certain message
+            modules['chat'].blind({
+                'to': _channelId,
+                'userid': blind.userId,
+                'time': blind.messageTime,
+            });
+        })
     
         // General chat
         chzzkChat.on('chat', chat => {
-            console.log(chat);
-
             /*
-            chat = profile: {
-                userIdHash: 'c6f75be90a32cac61524e91db7648f98',
-                nickname: 'TELK',
-                profileImageUrl: '',
-                userRoleCode: 'streamer',
-                badge: {
-                imageUrl: 'https://ssl.pstatic.net/static/nng/glive/icon/streamer.png'
+            chat = {
+                profile: {
+                    userIdHash: 'c6f75be90a32cac61524e91db7648f98',
+                    nickname: 'TELK',
+                    profileImageUrl: '',
+                    userRoleCode: 'streamer',
+                    badge: {
+                    imageUrl: 'https://ssl.pstatic.net/static/nng/glive/icon/streamer.png'
+                    },
+                    title: { name: '스트리머', color: '#D9B04F' },
+                    verifiedMark: false,
+                    activityBadges: [],
+                    streamingProperty: {}
                 },
-                title: { name: '스트리머', color: '#D9B04F' },
-                verifiedMark: false,
-                activityBadges: [],
-                streamingProperty: {}
-            },
+                extras: {
+                    chatType: 'STREAMING',
+                    osType: 'PC',
+                    extraToken: 'YP7A394Rkw3wJKH2hFL0gkisfmwYfIYs/hzZG4u8wL+vG8CwNTOFUB6l0mFHFwi0ZZDdBa+F/2yYCYopEjrXAA==',
+                    streamingChannelId: 'c6f75be90a32cac61524e91db7648f98',
+                    emojis: ''
+                },
+                hidden: false,
+                message: 'asdf',
+                time: 1708847810608,
+                isRecent: false,
+                memberCount: 2
+            }
             */
 
             // Blinded
@@ -80,10 +113,12 @@ exports.init = async () => {
             modules['chat'].send({
                 'to': _channelId,
                 'username': username,
+                'userid': chat.profile.userIdHash,
                 'message': message,
                 'platform': 'chzzk',
                 'isMod': (chat.profile.userRoleCode === 'common_user' ? false : true),
-            });
+                'time': chat.time,
+            }, chzzkChat);
         });
 
         // Connect
@@ -99,74 +134,3 @@ exports.join = (id) => {
         fs.writeFileSync(__dirname + '/../../config/channels.json', JSON.stringify(channels, null, 4));
     }
 };
-
-/*
-// deperecated
-exports.init2 = async () => {
-    var chzzkChat = module.parent.exports.chzzkChat;
-    const client = new ChzzkClient(auth.options.chzzkAuthInfo);
-    
-    // // 채널 검색
-    // const result = await client.search.channels("TELK")
-    // const channel = result.channels[0]
-
-    // 채팅 인스턴스 생성
-    chzzkChat = module.parent.exports.chzzkChat = client.chat({
-        channelId: auth.options.chzzkChannelId,
-        // chatChannelId 의 변경을 감지하기 위한 polling 요청의 주기 (선택사항, ms 단위)
-        // channelId를 지정할 경우 자동으로 30초로 설정됨, 0초로 설정 시 polling 요청을 하지 않음
-        pollInterval: 30 * 1000,
-    });
-
-    chzzkChat.on('connect', chatChannelId => {
-        console.log('[chzzk.js] Connected to chat %s', chatChannelId);
-
-        // 최근 50개의 채팅을 요청 (선택사항, 이 요청으로 불러와진 채팅 및 도네이션은 isRecent 값이 true)
-        // chzzkChat.requestRecentChat(50)
-
-        // // 채팅 전송 (로그인 시에만 가능)
-        // bot.sayToChzzk('test');
-    });
-    
-    // 재연결 (방송 시작 시)
-    chzzkChat.on('reconnect', chatChannelId => {
-        console.log('Reconnected to ' + chatChannelId);
-    });
-
-    // 일반 채팅
-    chzzkChat.on('chat', chat => {
-        // 블라인드 처리됨
-        if (chat.hidden) {
-            return;
-        }
-
-        let username = chat.profile.nickname;
-        let message = chat.message
-        
-        console.log('[CHZZK] ' + username + ' >>> ' + message);
-
-        module.parent.exports.modules['tts.js'].sendTTS({
-            'display-name': username,
-            'username': username,
-            'message': message,
-            'emotes': [],
-            'tts_type': 'default',
-        });
-
-        io.to('chat').emit('chat', {
-            'nick': username,
-            'username': username,
-            'message': message,
-            // 'detail': user,
-        });
-
-        module.parent.exports.modules['response.js'].init({
-            'msg': message,
-            'is_mod': (username === 'TELK'),
-        }, 'chzzk');
-    });
-
-    // 채팅 연결
-    await chzzkChat.connect();
-};
-*/

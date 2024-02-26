@@ -4,6 +4,10 @@
 var exports = module.exports = {};
 // const socketio = require('socket.io');
 
+/**
+ * Global variables
+ */
+var modules = module.parent.exports.modules;
 var io, chatio;
 
 /**
@@ -33,24 +37,53 @@ var socket = exports.socket = (socket) => {
  * Send a chat message
  * 
  * @param data = {
+ *     to
  *     username
  *     message
+ *     platform
+ *     isMod
+ *     time
  * }
+ * @param chzzkChat
  */
-var send = exports.send = (data) => {
+var send = exports.send = (data, chzzkChat) => {
     if (!data.to) {
         return;
     }
     if (data.username === 'TKbot') {
         return;
     }
-    chatio.to(data.to).emit('data', {
-        'username': data.username,
-        'message': data.message,
+    if (chatio) {
+        chatio.to(data.to).emit('data', {
+            'userid': data.userid,
+            'username': data.username,
+            'message': data.message,
+            'time': data.time,
+        });
+    }
+
+    // response
+    modules['response'].response(data, chzzkChat, 'sendChat');
+};
+
+
+/**
+ * Blind certain message
+ * @param data = {
+ *     to
+ *     userid
+ *     time
+ * }
+ */
+var blind = exports.blind = (data) => {
+    if (!data.to) {
+        return;
+    }
+    if (data.username === 'TKbot') {
+        return;
+    }
+    chatio.to(data.to).emit('blind', {
+        'userid': data.userid,
+        'time': data.time,
     });
-
-    //TODO> response
-
-    //TODO> TTS
-
 };
