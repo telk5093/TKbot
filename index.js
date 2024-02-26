@@ -69,21 +69,7 @@ var init = async () => {
             let _moduleName = 'core/' + String(_coreModules[i]).substring(0, _coreModules[i].length - 3);
             if (!modulesIncluded[_moduleName] && String(_coreModules[i]).substring(0, 1) !== '#' && String(_coreModules[i]).substring(_coreModules[i].length - 3, _coreModules[i].length) === '.js') {
                 modules[_moduleName] = require(__dirname + '/modules/core/' + _coreModules[i]);
-                console.log('[module] Successfully loaded: %s', _coreModules[i]);
-                if (typeof modules[_moduleName].init === 'function') {
-                    modules[_moduleName].init();
-                    modulesIncluded[_moduleName] = true;
-                }
-            }
-        }
-
-        // Load general modules
-        let _modules = fs.readdirSync(__dirname + '/modules/');
-        for (let i = 0; i < _modules.length; i++) {
-            let _moduleName = String(_modules[i]).substring(0, _modules[i].length - 3);
-            if (!modulesIncluded[_moduleName] && String(_modules[i]).substring(0, 1) !== '#' && String(_modules[i]).substring(_modules[i].length - 3, _modules[i].length ) === '.js') {
-                modules[_moduleName] = require(__dirname + '/modules/' + _modules[i]);
-                console.log('[module] Successfully loaded: %s', _modules[i]);
+                console.log('[core module] Successfully loaded: %s', _coreModules[i]);
                 if (typeof modules[_moduleName].init === 'function') {
                     modules[_moduleName].init();
                     modulesIncluded[_moduleName] = true;
@@ -109,8 +95,8 @@ var init = async () => {
         //     }
         // });
         chatio.on('connection', (_socket) => {
-            if (typeof modules['chat'].socket === 'function') {
-                modules['chat'].socket(_socket);
+            if (typeof modules['core/chat'].socket === 'function') {
+                modules['core/chat'].socket(_socket);
             }
         });
 

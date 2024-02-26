@@ -1,14 +1,34 @@
+var exports = module.exports = {};
+
 /**
  * requires
  */
-var exports = module.exports = {};
-// const socketio = require('socket.io');
+const fs = require('fs');
 
 /**
  * Global variables
  */
 var modules = module.parent.exports.modules;
 var io, chatio;
+var modulesIncluded = {};
+
+/**
+ * Initialization
+ */
+var init = exports.init = () => {
+    // Load chat message modules
+    let _modules = fs.readdirSync(__dirname + '/../');
+    for (let i = 0; i < _modules.length; i++) {
+        let _moduleName = String(_modules[i]).substring(0, _modules[i].length - 3);
+        if (!modulesIncluded[_moduleName] && String(_modules[i]).substring(0, 1) !== '#' && String(_modules[i]).substring(_modules[i].length - 3, _modules[i].length ) === '.js') {
+            modules[_moduleName] = require(__dirname + '/../' + _modules[i]);
+            if (typeof modules[_moduleName].init === 'function') {
+                console.log('[chat module] Successfully loaded: %s', _modules[i]);
+                modulesIncluded[_moduleName] = modules[_moduleName];
+            }
+        }
+    }
+};
 
 /**
  * socket
@@ -43,10 +63,12 @@ var socket = exports.socket = (socket) => {
  *     platform
  *     isMod
  *     time
+ *     callback                         Callback function to send chat message
+ *     method                           Callback function's method to send chat message
  * }
  * @param chzzkChat
  */
-var send = exports.send = (data, chzzkChat) => {
+var send = exports.send = (data) => {
     if (!data.to) {
         return;
     }
@@ -62,8 +84,10 @@ var send = exports.send = (data, chzzkChat) => {
         });
     }
 
-    // response
-    modules['response'].response(data, chzzkChat, 'sendChat');
+    // Call chat message module
+    for (let _moduleName in modulesIncluded) {
+        modulesIncluded[_moduleName].init(data);
+    }
 };
 
 
