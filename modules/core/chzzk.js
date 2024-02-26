@@ -110,7 +110,7 @@ exports.init = async () => {
             console.log('[CHZZK] ' + _channelId + ' > ' + username + ' >>> ' + message);
 
             // Send a chat message
-            modules['chat'].send({
+            modules['core/chat'].send({
                 'to': _channelId,
                 'username': username,
                 'userid': chat.profile.userIdHash,
@@ -118,7 +118,9 @@ exports.init = async () => {
                 'platform': 'chzzk',
                 'isMod': (chat.profile.userRoleCode === 'common_user' ? false : true),
                 'time': chat.time,
-            }, chzzkChat);
+                'callback': chzzkChat,
+                'method': 'sendChat',
+            }, chzzkChat, 'sendChat');
         });
 
         // Connect
