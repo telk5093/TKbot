@@ -17,6 +17,7 @@ const socketio = require('socket.io');
  */
 var modules = exports.modules = {};
 var userList = exports.userList = [];
+var fetch = exports.fetch = null;
 
 
 /**

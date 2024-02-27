@@ -14,9 +14,8 @@ var modules = module.parent.exports.modules;
 var userList = module.parent.exports.userList;
 
 /**
- * Response
+ * !follow
  * @param Object data                   Message data object
- * @param function callback             A function to send message
  */
 var init = exports.init = async (data) => {
     let message = data.message;

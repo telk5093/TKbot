@@ -62,7 +62,7 @@ exports.init = async () => {
             }
             */
             // Blind certain message
-            modules['chat'].blind({
+            modules['core/chat'].blind({
                 'to': _channelId,
                 'userid': blind.userId,
                 'time': blind.messageTime,
@@ -136,7 +136,8 @@ exports.init = async () => {
                 'platform': 'chzzk',
                 'callback': chzzkChat,
                 'method': 'sendChat',
-            }, chzzkChat, 'sendChat');
+                'client': client,
+            });
         });
 
         // Connect

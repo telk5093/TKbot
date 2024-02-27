@@ -67,7 +67,6 @@ var socket = exports.socket = (socket) => {
  *     callback                         Callback function to send chat message
  *     method                           Callback function's method to send chat message
  * }
- * @param chzzkChat
  */
 var send = exports.send = (data) => {
     if (!data.to) {
@@ -107,8 +106,10 @@ var blind = exports.blind = (data) => {
     if (data.username === 'TKbot') {
         return;
     }
-    chatio.to(data.to).emit('blind', {
-        'userid': data.userid,
-        'time': data.time,
-    });
+    if (chatio) {
+        chatio.to(data.to).emit('blind', {
+            'userid': data.userid,
+            'time': data.time,
+        });
+    }
 };
