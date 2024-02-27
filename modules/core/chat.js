@@ -9,6 +9,7 @@ const fs = require('fs');
  * Global variables
  */
 var modules = module.parent.exports.modules;
+var userList = exports.userList = module.parent.exports.userList;
 var io, chatio;
 var modulesIncluded = {};
 

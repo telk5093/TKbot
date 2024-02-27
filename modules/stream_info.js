@@ -47,7 +47,7 @@ var init = exports.init = async (data) => {
         }
 
         if (liveDetail && liveDetail.liveTitle) {
-            data.callback[data.method]('현재 방제: ' + liveDetail.liveTitle);
+            data.callback[data.method]('@' + data.username + ' 현재 방제: ' + liveDetail.liveTitle);
         }
 
     // Get game
@@ -110,7 +110,7 @@ var init = exports.init = async (data) => {
             }
         }
 
-        data.callback[data.method]('현재 방송 주제: ' + gameTitle);
+        data.callback[data.method]('@' + data.username + ' 현재 방송 주제: ' + gameTitle);
     
     // uptime
     } else if (lib.startWithCmd(message, ['!uptime', '!업타임', '!방송시간'])) {
@@ -120,30 +120,13 @@ var init = exports.init = async (data) => {
         if (liveDetail.openDate !== null && liveDetail.closeDate === null) {
             let n = new Date();
             let m = new Date(liveDetail.openDate);
-            let t = Math.floor((n.getTime() - m.getTime()) / 1000);
+            let second = Math.floor((n.getTime() - m.getTime()) / 1000);
 
-            let streamUptime = [];
-            let d = Math.floor(t / 86400);
-            let h = Math.floor((t % 86400) / 3600);
-            let i = Math.floor((t % 3600) / 60);
-            let s = (t % 60);
-            if (d > 0) {
-                streamUptime.push(d + '일')
-            }
-            if (h > 0) {
-                streamUptime.push(h + '시간')
-            }
-            if (i > 0) {
-                streamUptime.push(i + '분')
-            }
-            if (s > 0) {
-                streamUptime.push(s + '초')
-            }
-            data.callback[data.method]('현재 ' + streamUptime.join(' ') + ' 동안 방송 중입니다');
+            data.callback[data.method]('@' + data.username + ' 현재 ' + lib.time2readable(second) + ' 동안 방송 중입니다');
         
         // not live
         } else {
-            data.callback[data.method]('현재 방송 중이 아닙니다');
+            data.callback[data.method]('@' + data.username + ' 현재 방송 중이 아닙니다');
         }
     }
 };

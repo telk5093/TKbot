@@ -16,7 +16,7 @@ const socketio = require('socket.io');
  * Initialize global variables
  */
 var modules = exports.modules = {};
-var chatters = exports.chatters = {};
+var userList = exports.userList = [];
 
 
 /**

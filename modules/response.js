@@ -84,7 +84,7 @@ var init = exports.init = (data) => {
     // Managing response command
     if (data.isMod) {
         // Add a command
-        if ((t = lib.startWith(message, '!command add ')) || (t = lib.startWith(message, '!명령어 추가 '))) {
+        if (t = lib.startWith(message, ['!command add ', '!명령어 추가 '])) {
             let _tmp = String(t).split(' ');
             let commandToAddCmd = String(_tmp[0]).trim();
             delete _tmp[0];
@@ -102,7 +102,7 @@ var init = exports.init = (data) => {
             }
 
         // Edit a command
-        } else if ((t = lib.startWith(message, '!command edit ')) || (t = lib.startWith(message, '!명령어 수정 '))) {
+        } else if (t = lib.startWith(message, ['!command edit ', '!명령어 수정 '])) {
             let _tmp = String(t).split(' ');
             let commandToAddCmd = String(_tmp[0]).trim();
             delete _tmp[0];
@@ -120,7 +120,7 @@ var init = exports.init = (data) => {
             }
 
         // Delete a command
-        } else if ((t = lib.startWith(message, '!command del ')) || (t = lib.startWith(message, '!command delete ')) || (t = lib.startWith(message, '!command remove ')) || (t = lib.startWith(message, '!명령어 삭제 ')) || (t = lib.startWith(message, '!명령어 제거 '))) {
+        } else if (t = lib.startWith(message, ['!command del ', '!command delete ', '!command remove ', '!명령어 삭제 ', '!명령어 제거 '])) {
             let commandToDelCmd = String(t).trim();
             for (let _commandPool in msgResponse) {
                 if (lib.isMatch(commandToDelCmd, _commandPool.split(','))) {

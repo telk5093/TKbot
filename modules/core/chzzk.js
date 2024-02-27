@@ -3,7 +3,8 @@
  */
 var exports = module.exports = {};
 const fs = require('fs');
-const { ChzzkClient } = require('chzzk');
+const chzzk = require('chzzk');
+const { ChzzkClient } = chzzk;
 const auth = require(__dirname + '/../../config/auth.js');
 const config = require(__dirname + '/../../config/config.js');
 // const lib = require(__dirname + '/../../scripts/lib.js');
@@ -11,6 +12,7 @@ const config = require(__dirname + '/../../config/config.js');
 
 var io = module.parent.exports.io;
 var modules = module.parent.exports.modules;
+var userList = module.parent.exports.userList;
 
 exports.init = async () => {
     let channels = JSON.parse(fs.readFileSync(__dirname + '/../../config/channels.json'));
@@ -31,7 +33,7 @@ exports.init = async () => {
             pollInterval: 30 * 1000,
         });
 
-        chzzkChat.on('connect', () => {
+        chzzkChat.on('connect', async () => {
             console.log('[chzzk.js] Connected to chat %s', _channelId);
     
             // 최근 50개의 채팅을 요청 (선택사항, 이 요청으로 불러와진 채팅 및 도네이션은 isRecent 값이 true)
@@ -68,7 +70,7 @@ exports.init = async () => {
         })
     
         // General chat
-        chzzkChat.on('chat', chat => {
+        chzzkChat.on('chat', async (chat) => {
             /*
             chat = {
                 profile: {
@@ -109,6 +111,19 @@ exports.init = async () => {
             
             console.log('[CHZZK] ' + _channelId + ' > ' + username + ' >>> ' + message);
 
+            // Add user
+            if (!(chat.profile.userIdHash in userList)) {
+                let profile = await client.chat.profileCard(chzzkChat.chatChannelId, chat.profile.userIdHash);
+                let following = profile.streamingProperty.following;
+                userList[chat.profile.userIdHash] = {
+                    'username': username,
+                    'followed': (following ? following.followDate : null),
+                    'lastchat': new Date(),
+                    'isMod': chzzk.isModerator(chat.profile),
+                    'isStreamer': chzzk.isStreamer(chat.profile),
+                };
+            }
+
             // Send a chat message
             modules['core/chat'].send({
                 'to': _channelId,
@@ -118,6 +133,7 @@ exports.init = async () => {
                 'platform': 'chzzk',
                 'isMod': (chat.profile.userRoleCode === 'common_user' ? false : true),
                 'time': chat.time,
+                'platform': 'chzzk',
                 'callback': chzzkChat,
                 'method': 'sendChat',
             }, chzzkChat, 'sendChat');
