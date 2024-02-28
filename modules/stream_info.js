@@ -10,6 +10,8 @@ const axios = require('axios');
  * Global variables
  */
 var modules = module.parent.exports.modules;
+var channelsConfig = module.parent.exports.channelsConfig;
+
 let msgResponse = {};
 let params = {
     adult: false,
@@ -28,6 +30,11 @@ var init = exports.init = async (data) => {
 
     // Get stream title
     if (t = lib.startWithCmd(message, ['!방제', '!title', '!샤싣', '!타이틀'])) {
+        // chzzk만 지원
+        if (data.platform !== 'chzzk') {
+            return;
+        }
+
         const liveDetail = await data.callback.client.live.detail(data.to);
 
         // Change stream title
@@ -36,22 +43,27 @@ var init = exports.init = async (data) => {
             let streamTitle = String(t.param).trim();
 
             if (!streamTitle) {
-                data.callback[data.method]('사용 방법: !title <방제>');
+                lib.say(data, '사용 방법: !title <방제>');
                 return;
             } else {
                 liveSetting.defaultLiveTitle = streamTitle;
                 await data.callback.client.live.setting(data.to, liveSetting);
-                data.callback[data.method]('방송 제목이 "' + streamTitle + '"(으)로 변경되었습니다.');
+                lib.say(data, '방송 제목이 "' + streamTitle + '"(으)로 변경되었습니다.');
                 return;
             }
         }
 
         if (liveDetail && liveDetail.liveTitle) {
-            data.callback[data.method]('@' + data.username + ' 현재 방제: ' + liveDetail.liveTitle);
+            lib.say(data, '@' + data.username + ' 현재 방제: ' + liveDetail.liveTitle);
         }
 
     // Get game
     } else if (t = lib.startWithCmd(message, ['!게임', '!game', '!ㅎ믇', '!주제'])) {
+        // chzzk만 지원
+        if (data.platform !== 'chzzk') {
+            return;
+        }
+
         const liveDetail = await data.callback.client.live.detail(data.to);
         let gameType = null;
         let gameTitle = null;
@@ -75,7 +87,7 @@ var init = exports.init = async (data) => {
             let gameTitle = String(t.param).trim();
 
             if (!gameTitle) {
-                data.callback[data.method]('사용 방법: !game <게임이름>');
+                lib.say(data, '사용 방법: !game <게임이름>');
                 return;
             } else {
                 // Search game
@@ -94,7 +106,7 @@ var init = exports.init = async (data) => {
                         category = result.lounges[0].originalLoungeId;
                         categoryName = result.lounges[0].loungeName;
                     } else {
-                        data.callback[data.method]('"' + gameTitle + '" 주제를 찾지 못했습니다');
+                        lib.say(data, '"' + gameTitle + '" 주제를 찾지 못했습니다');
                         return;
                     }
                 }
@@ -105,28 +117,82 @@ var init = exports.init = async (data) => {
                 re_liveSetting.liveCategory = category;
                 re_liveSetting.liveCategoryName = categoryName;
                 await data.callback.client.live.setting(data.to, re_liveSetting);
-                data.callback[data.method]('방송 주제가 "' + categoryName + '"(으)로 변경되었습니다.');
+                lib.say(data, '방송 주제가 "' + categoryName + '"(으)로 변경되었습니다.');
                 return;
             }
         }
 
-        data.callback[data.method]('@' + data.username + ' 현재 방송 주제: ' + gameTitle);
+        lib.say(data, '@' + data.username + ' 현재 방송 주제: ' + gameTitle);
     
     // uptime
     } else if (lib.startWithCmd(message, ['!uptime', '!업타임', '!방송시간'])) {
-        const liveDetail = await data.callback.client.live.detail(data.to);
+        let second = -1;
+        let since = null;
+        let channelConfig = lib.loadChannelsConfig(data.uid);
 
-        // live
-        if (liveDetail.openDate !== null && liveDetail.closeDate === null) {
+        // From chzzk
+        if (channelConfig.channels.chzzk) {
+            let res = await axios({
+                url: 'https://api.chzzk.naver.com/service/v2/channels/' + channelConfig.channels.chzzk + '/live-detail',
+                type: 'GET',
+            });
+            let liveDetail = res.data.content;
+            // const liveDetail = await data.callback.client.live.detail(data.to);
+
             let n = new Date();
             let m = new Date(liveDetail.openDate);
-            let second = Math.floor((n.getTime() - m.getTime()) / 1000);
+            if (liveDetail.openDate !== null && liveDetail.closeDate == null) {
+                second = Math.floor((n.getTime() - m.getTime()) / 1000);
+                since = lib.prettyDate(m).full_str;
+            }
 
-            data.callback[data.method]('@' + data.username + ' 현재 ' + lib.time2readable(second) + ' 동안 방송 중입니다');
+        // From twitch
+        } else if (channelConfig.channels.twitch) {
+            let res = await axios({
+                url: 'https://beta.decapi.me/twitch/uptime/' + channelConfig.channels.twitch,
+                type: 'GET',
+            });
+            if (String(res.data).indexOf('is offline') >= 0) {
+                second = -1;
+            } else {
+                second = 0;
+                let tmp = String(res.data).split(',');
+                for (let i in tmp) {
+                    let _tmp = String(tmp[i]).trim().split(' ');
+                    switch(_tmp[1]) {
+                        case 'days':
+                            second += Number(_tmp[0]) * 86400;
+                            break;
+                        case 'hours':
+                            second += Number(_tmp[0]) * 3600;
+                            break;
+                        case 'minutes':
+                            second += Number(_tmp[0]) * 60;
+                            break;
+                        case 'seconds':
+                            second += Number(_tmp[0]);
+                            break;
+                    }
+                }
+            }
+
+            let ts = (Math.floor((new Date()).getTime() / 1000) - second) * 1000;
+            let ns = new Date();
+            ns.setTime(ts);
+            since = lib.prettyDate(ns).full_str;
+
+        } else {
+            lib.say(data, '@' + data.username + ' 방송 시간을 불러올 수 없습니다');
+            return;
+        }
+
+        // live
+        if (second >= 0) {
+            lib.say(data, '@' + data.username + ' 현재 ' + since + ' 부터 지금까지 ' + lib.time2readable(second) + ' 동안 방송 중입니다');
         
         // not live
         } else {
-            data.callback[data.method]('@' + data.username + ' 현재 방송 중이 아닙니다');
+            lib.say(data, '@' + data.username + ' 현재 방송 중이 아닙니다');
         }
     }
 };
