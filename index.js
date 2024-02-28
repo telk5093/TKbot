@@ -10,6 +10,7 @@ const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const socketio = require('socket.io');
+const lib = require(__dirname + '/lib/lib.js');
 
 
 /**
@@ -17,6 +18,7 @@ const socketio = require('socket.io');
  */
 var modules = exports.modules = {};
 var userList = exports.userList = [];
+var channelsConfig = exports.channelsConfig = {};
 var fetch = exports.fetch = null;
 
 
@@ -61,6 +63,9 @@ if (config.use_https) {
  */
 var init = async () => {
     try {
+        // Load all channel's config
+        channelsConfig = lib.loadChannelsConfig();
+
         // Loaded modules
         let modulesIncluded = {};
 

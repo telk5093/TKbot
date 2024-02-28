@@ -9,28 +9,30 @@ const lib = require(__dirname + '/../lib/lib.js');
  * Global variables
  */
 var modules = module.parent.exports.modules;
+var channelsConfig = module.parent.exports.channelsConfig;
+
 let msgResponse = {};
 
 /**
  * Load the response data
  */
-var loadResponseData = (channelId) => {
-    let channelConfig = lib.readJSON(__dirname + '/../config/channels/' + channelId + '.json');
+var loadResponseData = (platform, channelUid) => {
+    let channelConfig = lib.loadChannelsConfig(channelUid);
     return channelConfig.response;
 };
 
 /**
  * Save the response data
  */
-var saveResponseData = (channelId, responseData) => {
-    let channelConfig = lib.readJSON(__dirname + '/../config/channels/' + channelId + '.json');
+var saveResponseData = (platform, channelUid, responseData) => {
+    let channelConfig = lib.loadChannelsConfig(channelUid);
     channelConfig.response = responseData;
-    return lib.saveJSON(__dirname + '/../config/channels/' + channelId + '.json', channelConfig);
+    return lib.saveJSON(__dirname + '/../config/channels/' + channelUid + '.json', channelConfig);
 }
 
 /**
  * Find alias of the command. Terminate more than five loops
- * @param 
+ * @param
  */
 var findAlias = (msg, alias) => {
     let rst = msg;
@@ -70,15 +72,31 @@ var init = exports.init = (data) => {
         return;
     }
 
+    var say = (data, message) => {
+        switch (data.platform) {
+            case 'chzzk':
+                data.callback[data.method](message);
+                break;
+            case 'twitch':
+                data.callback[data.method](data.to, message);
+                break;
+            case 'youtube':
+                break;
+            case 'kick':
+                break;
+        }
+    };
+
     // load response data
-    msgResponse = loadResponseData(data.to);
+    msgResponse = loadResponseData(data.platform, data.uid);
 
     let t = -1;
     message = findAlias(message, msgResponse);
 
     // Say
     if (t = lib.startWith(message, '!say ')) {
-        data.callback[data.method](String(t).trim());
+        say(data, String(t).trim());
+        return;
     }
 
     // Managing response command
@@ -92,13 +110,13 @@ var init = exports.init = (data) => {
 
             // Check if it is already exist command
             if (Object.keys(msgResponse).indexOf(commandToAddCmd) >= 0) {
-                data.callback[data.method]('"' + commandToAddCmd + '" 명령어를 추가할 수 없습니다! ... 이미 존재하는 명령어입니다');
+                say(data, '"' + commandToAddCmd + '" 명령어를 추가할 수 없습니다! ... 이미 존재하는 명령어입니다');
                 return;
             } else {
                 // 파일 쓰기
                 msgResponse[commandToAddCmd] = commandToAddRes;
-                saveResponseData(data.to, msgResponse);
-                data.callback[data.method]('"' + commandToAddCmd + '" 명령어가 정상적으로 추가되었습니다.');
+                saveResponseData(data.platform, data.uid, msgResponse);
+                say(data, '"' + commandToAddCmd + '" 명령어가 정상적으로 추가되었습니다.');
             }
 
         // Edit a command
@@ -110,13 +128,13 @@ var init = exports.init = (data) => {
 
             // 이미 존재하는 명령어인지 확인
             if (Object.keys(msgResponse).indexOf(commandToAddCmd) < 0) {
-                data.callback[data.method]('"' + commandToAddCmd + '" 명령어를 수정할 수 없습니다! ... 존재하지 않는 명령어입니다');
+                say(data, '"' + commandToAddCmd + '" 명령어를 수정할 수 없습니다! ... 존재하지 않는 명령어입니다');
                 return;
             } else {
                 // 파일 쓰기
                 msgResponse[commandToAddCmd] = commandToAddRes;
-                saveResponseData(data.to, msgResponse);
-                data.callback[data.method]('"' + commandToAddCmd + '" 명령어가 정상적으로 수정되었습니다.');
+                saveResponseData(data.platform, data.uid, msgResponse);
+                say(data, '"' + commandToAddCmd + '" 명령어가 정상적으로 수정되었습니다.');
             }
 
         // Delete a command
@@ -129,15 +147,14 @@ var init = exports.init = (data) => {
             }
 
             // 파일 쓰기
-            saveResponseData(data.to, msgResponse);
-            data.callback[data.method](commandToDelCmd + ' 명령어가 정상적으로 삭제되었습니다.');
+            saveResponseData(data.platform, data.uid, msgResponse);
+            say(data, commandToDelCmd + ' 명령어가 정상적으로 삭제되었습니다.');
         }
     }
 
-
     // 다시 불러오기
     if (lib.isMatch(message, ['!command reload', '!command refresh', '!명령어 새로고침', '!명령어 불러오기'])) {
-        msgResponse = loadResponseData(data.to);
-        data.callback[data.method]('자동 응답을 다시 불러왔습니다.');
+        msgResponse = loadResponseData(data.platform, data.uid);
+        say(data, '자동 응답을 다시 불러왔습니다.');
     }
 };

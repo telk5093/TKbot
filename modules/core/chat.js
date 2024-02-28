@@ -10,6 +10,7 @@ const fs = require('fs');
  */
 var modules = module.parent.exports.modules;
 var userList = exports.userList = module.parent.exports.userList;
+var channelsConfig = module.parent.exports.channelsConfig;
 var io, chatio;
 var modulesIncluded = {};
 
@@ -58,8 +59,10 @@ var socket = exports.socket = (socket) => {
  * Send a chat message
  * 
  * @param data = {
+ *     uid
  *     to
  *     username
+ *     userid
  *     message
  *     platform
  *     isMod
@@ -69,14 +72,15 @@ var socket = exports.socket = (socket) => {
  * }
  */
 var send = exports.send = (data) => {
-    if (!data.to) {
+    if (!data.uid) {
         return;
     }
     if (data.username === 'TKbot') {
         return;
     }
     if (chatio) {
-        chatio.to(data.to).emit('data', {
+        chatio.to(data.uid).emit('data', {
+            'platform': data.platform,
             'userid': data.userid,
             'username': data.username,
             'message': data.message,

@@ -7,23 +7,23 @@ const chzzk = require('chzzk');
 const { ChzzkClient } = chzzk;
 const auth = require(__dirname + '/../../config/auth.js');
 const config = require(__dirname + '/../../config/config.js');
-// const lib = require(__dirname + '/../../scripts/lib.js');
-// const bot = require(__dirname + '/../../scripts/bot.js');
 
 var io = module.parent.exports.io;
 var modules = module.parent.exports.modules;
 var userList = module.parent.exports.userList;
+var channelsConfig = module.parent.exports.channelsConfig;
 
 exports.init = async () => {
-    let channels = JSON.parse(fs.readFileSync(__dirname + '/../../config/channels.json'));
-    
     const client = new ChzzkClient({
         nidAuth: auth.bot.chzzk.nidAuth,
         nidSession: auth.bot.chzzk.nidSession,
     });
 
-    for (let i in channels.chzzk) {
-        let _channelId = channels.chzzk[i];
+    for (let _channelUid in channelsConfig) {
+        let _channelId = channelsConfig[_channelUid].channels.chzzk;
+        if (!_channelId) {
+            continue;
+        }
 
         // Generate chatting instance
         let chzzkChat = client.chat({
@@ -35,14 +35,14 @@ exports.init = async () => {
 
         chzzkChat.on('connect', async () => {
             console.log('[chzzk.js] Connected to chat %s', _channelId);
-    
+
             // 최근 50개의 채팅을 요청 (선택사항, 이 요청으로 불러와진 채팅 및 도네이션은 isRecent 값이 true)
             // chzzkChat.requestRecentChat(50)
-    
+
             // // 채팅 전송 (로그인 시에만 가능)
             // chzzkChat.sendChat('test');
         });
-        
+
         // Reconnect
         chzzkChat.on('reconnect', chatChannelId => {
             console.log('Reconnected to ' + chatChannelId);
@@ -68,7 +68,7 @@ exports.init = async () => {
                 'time': blind.messageTime,
             });
         })
-    
+
         // General chat
         chzzkChat.on('chat', async (chat) => {
             /*
@@ -107,8 +107,10 @@ exports.init = async () => {
             }
 
             let username = chat.profile.nickname;
-            let message = chat.message
-            
+            let userid = chat.profile.userIdHash;
+            let message = chat.message;
+            let isMod = (chat.profile.userRoleCode === 'common_user' ? false : true);
+
             console.log('[CHZZK] ' + _channelId + ' > ' + username + ' >>> ' + message);
 
             // Add user
@@ -126,14 +128,14 @@ exports.init = async () => {
 
             // Send a chat message
             modules['core/chat'].send({
+                'platform': 'chzzk',
+                'uid': _channelUid,
                 'to': _channelId,
                 'username': username,
-                'userid': chat.profile.userIdHash,
+                'userid': userid,
                 'message': message,
-                'platform': 'chzzk',
-                'isMod': (chat.profile.userRoleCode === 'common_user' ? false : true),
+                'isMod': isMod,
                 'time': chat.time,
-                'platform': 'chzzk',
                 'callback': chzzkChat,
                 'method': 'sendChat',
                 'client': client,
