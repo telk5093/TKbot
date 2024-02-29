@@ -90,7 +90,9 @@ var init = exports.init = (data) => {
         youtubeChat.on('error', (err) => {});
 
         startYouTubeChat(youtubeChat);
-        setInterval(startYouTubeChat, 10 * 1000);
+        setInterval(function() {
+            startYouTubeChat(youtubeChat);
+        }, 10 * 1000);
     }
 }
 
@@ -98,7 +100,7 @@ var startYouTubeChat = (youtubeChat) => {
     if (youtubeLiveId) {
         return;
     }
-    console.log('[youtube.js] try to connect');
+    // console.log('[youtube.js] try to connect');
     const ok = youtubeChat.start();
     if (!ok) {
         console.log('[youtube.js] Failed to start, check emitted error');
