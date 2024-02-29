@@ -114,10 +114,13 @@ exports.init = async () => {
             console.log('[CHZZK] ' + _channelId + ' > ' + username + ' >>> ' + message);
 
             // Add user
-            if (!(chat.profile.userIdHash in userList)) {
-                let profile = await client.chat.profileCard(chzzkChat.chatChannelId, chat.profile.userIdHash);
-                let following = profile.streamingProperty.following;
-                userList[chat.profile.userIdHash] = {
+            if (!(userid in userList)) {
+                let following = null;
+                if (!chzzk.isStreamer(chat.profile)) {
+                    let profile = await client.chat.profileCard(chzzkChat.chatChannelId, userid);
+                    following = profile.streamingProperty.following;
+                }
+                userList[userid] = {
                     'username': username,
                     'followed': (following ? following.followDate : null),
                     'lastchat': new Date(),

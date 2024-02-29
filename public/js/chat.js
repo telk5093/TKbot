@@ -32,8 +32,8 @@
  * addMessage
  */
 var numChat = 0;
-const numChatMax = 3;
-const fadeoutTime = 10;
+const numChatMax = 20;
+const fadeoutTime = 60;
 function addMessage(data) {
     let chatWrap = $('#chatWrap');
 

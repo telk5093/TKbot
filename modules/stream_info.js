@@ -123,7 +123,7 @@ var init = exports.init = async (data) => {
         }
 
         lib.say(data, '@' + data.username + ' 현재 방송 주제: ' + gameTitle);
-    
+
     // uptime
     } else if (lib.startWithCmd(message, ['!uptime', '!업타임', '!방송시간'])) {
         let second = -1;
@@ -189,7 +189,7 @@ var init = exports.init = async (data) => {
         // live
         if (second >= 0) {
             lib.say(data, '@' + data.username + ' 현재 ' + since + ' 부터 지금까지 ' + lib.time2readable(second) + ' 동안 방송 중입니다');
-        
+
         // not live
         } else {
             lib.say(data, '@' + data.username + ' 현재 방송 중이 아닙니다');
