@@ -129,6 +129,20 @@ exports.init = async () => {
                 };
             }
 
+            // emoji 파싱
+            let emotes = {};
+            if (chat.extras.emojis && Object.keys(chat.extras.emojis).length > 0) {
+                emotes = chat.extras.emojis;
+                // for (let _emoteKey in chat.extras.emojis) {
+                //     let _emoteUrl = chat.extras.emojis[_emoteKey];
+                    
+                //     emotes.push({
+                //         'key': _emoteKey,
+                //         'url': _emoteUrl,
+                //     });
+                // }
+            }
+
             // Send a chat message
             modules['core/chat'].send({
                 'platform': 'chzzk',
@@ -137,6 +151,7 @@ exports.init = async () => {
                 'username': username,
                 'userid': userid,
                 'message': message,
+                'emotes': emotes,
                 'isMod': isMod,
                 'time': chat.time,
                 'callback': chzzkChat,

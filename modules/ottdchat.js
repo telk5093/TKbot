@@ -13,19 +13,13 @@ const lib = require(__dirname + '/../lib/lib.js');
 // const bot = require('../scripts/bot.js');
 
 var oc = null;
-var ottdserver = {
-    'host': 'ottd.telk.kr',
-    'port': 13979,
-    'bot': {
-        'name': 'TELKbotOpenTTD',
-        'version': '1.0',
-    }
-}
+var TKbotInfo = {
+    'name': 'TKbot',
+    'version': '1.0',
+};
 const CompanyRemoveReasonsInString = ['수동', '자동 삭제', '파산'];
 var clientInfo = [];
 
-//TODO> REMOVE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-var ottd_adminpw = 'tkld7759-A-!';
 
 // Initialize
 exports.init = (data) => {
@@ -35,13 +29,24 @@ exports.init = (data) => {
     
     // Connect to OpenTTD server
     if (isMod && lib.isMatch(message, ['!ottd connect', '!ottd start'])) {
-        console.log('[ottdchat] Try to connect %s:%d', String(ottdserver.host), Number(ottdserver.port));
+        let _channelConfig = lib.loadChannelsConfig(data.uid);
+        if (!_channelConfig.openttd || !_channelConfig.openttd.host || !_channelConfig.openttd.port) {
+            return;
+        }
+
+        // Connection host/port
+        let openttdHost = _channelConfig.openttd.host;
+        let openttdPort = _channelConfig.openttd.port;
+        let openttdPassword = _channelConfig.openttd.password;
+
+
+        console.log('[ottdchat] Try to connect %s:%d', String(openttdHost), Number(openttdPort));
         try {
             oc = new ottd.connection();
-            oc.connect(String(ottdserver.host), Number(ottdserver.port));
+            oc.connect(String(openttdHost), Number(openttdPort));
 
             oc.on('connect', () => {
-                oc.authenticate(String(ottdserver.bot.name), String(ottd_adminpw), String(ottdserver.bot.version));
+                oc.authenticate(String(TKbotInfo.name), String(openttdPassword), String(TKbotInfo.version));
             });
             oc.on('authenticate', ocdata => {
                 oc.send_update_frequency(ottd.enums.UpdateTypes.CHAT, ottd.enums.UpdateFrequencies.AUTOMATIC);
@@ -148,6 +153,9 @@ exports.init = (data) => {
     // Send message to ingame
     } else {
         if (!oc) {
+            return;
+        }
+        if (data.username === 'TKbot') {
             return;
         }
         oc.send_rcon('say "<' + data.username + '> ' + message.replace(/"/ig, '\"') + '"');

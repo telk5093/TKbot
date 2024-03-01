@@ -2,6 +2,7 @@
  * app.js Router
  */
 const fs = require('fs');
+const lib = require(__dirname + '/../lib/lib.js');
 const express = require('express');
 const router = express.Router();
 
@@ -9,6 +10,23 @@ const router = express.Router();
  * Global variables
  */
 var modules = module.parent.exports.modules;
+
+/**
+ * Config
+ */
+router.get('/config/chat/:uid\.json', (req, res) => {
+    let uid = req.params.uid;
+    let content = '';
+    if (fs.existsSync(__dirname + '/../config/channels/' + uid + '.json')) {
+        let _channelConfig = lib.readJSON(__dirname + '/../config/channels/' + uid + '.json');
+        contents = JSON.stringify(_channelConfig.chat);
+    } else {
+        contents = 'Invalid username';
+    }
+    res.writeHead(200, {'Content-Type': 'text/json; charset=utf-8'});
+    res.end(contents);
+});
+
 
 /**
  * Join

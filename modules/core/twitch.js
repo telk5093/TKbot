@@ -44,6 +44,18 @@ exports.init = async () => {
                 return;
             }
 
+            // user.emotes = { '675510': [ '4-14', '16-26' ] },
+            // 받은 emotes 데이터를 가공
+            var emotes = {};
+            for (let _emoteId in user.emotes) {
+                user.emotes[_emoteId].forEach(function(_emotePos) {
+                    let tmp = _emotePos.split(/-/g);
+                    let from = Number(tmp[0]);
+                    let to = Number(tmp[1]);
+                    emotes[message.slice(from, to + 1)] = 'https://static-cdn.jtvnw.net/emoticons/v2/' + _emoteId + '/default/dark/3.0';
+                });
+            }
+
             let _channelId = channel.substring(1);
             let username = user['display-name'];
             let userid = user['username'];
@@ -132,6 +144,7 @@ exports.init = async () => {
                 'username': username,
                 'userid': userid,
                 'message': message,
+                'emotes': emotes,
                 'isMod': isMod,
                 'time': (new Date().getTime()),
                 'callback': twitchChat,

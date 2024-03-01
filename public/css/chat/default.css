@@ -75,3 +75,7 @@
     color: #888888;
     font-style: italic;
 }
+#chatWrap .chat .message .emote {
+    width: 2em;
+    vertical-align: middle;
+}

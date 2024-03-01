@@ -1,233 +1,51 @@
-@import url(https://fonts.googleapis.com/earlyaccess/nanumgothic.css);
-@import url(https://fonts.googleapis.com/earlyaccess/nanumbrushscript.css);
-@import url(https://fonts.googleapis.com/earlyaccess/nanumpenscript.css);
-@import url(./common.css);
+@charset "utf-8";
 
 :root {
-	--box-border-bright: #b7c3c3;
-	--box-border-dark: #5b7373;
-	--box-background-color: #839797;
-	--box-border-up: var(--box-border-bright) var(--box-border-dark) var(--box-border-dark) var(--box-border-bright);
-	--box-border-down: var(--box-border-dark) var(--box-border-bright) var(--box-border-bright) var(--box-border-dark);
+    --box-border-bright: #b7c3c3;
+    --box-border-dark: #5b7373;
+    --box-background-color: #839797;
+    --box-border-up: var(--box-border-bright) var(--box-border-dark) var(--box-border-dark) var(--box-border-bright);
+    --box-border-down: var(--box-border-dark) var(--box-border-bright) var(--box-border-bright) var(--box-border-dark);
 }
 
-html { overflow: hidden; }
-body {
-	position: absolute;
-	margin: 0;
-	right: 0;
-	left: 0;
-	bottom: 0;
+#chatWrap .chat {
+    padding: 0;
 }
 
-@keyframes SubsAni {
-	0%  { font-size: 16px; line-height: 17px; }
-	50% { font-size: 17px; }
-	100% { font-size: 16px; }
+#chatWrap .chat .header {
+    box-sizing: border-box;
+    justify-content: center;
+    border: 1px solid;
+    border-color: var(--box-border-down);
+    width: 100%;
+    height: 25px;
+    padding: 3px;
+    font-weight: bold;
+    font-family: dotum, serif;
+    text-shadow: 1px 1px 0 #101010;
+    color: #ffffff;
+    text-align: center;
+    font-size: 14px;
+    vertical-align: middle;
+    background-color: #2f4343;
 }
-.chat_subscribe_box,
-.chat_cheer_box	{
-	border-width: 1px;
-	border-style: solid;
-	border-color: var(--box-border-up);
-	padding: 5px;
-	color: #6fcf57;
-	font-weight: bold;
-	text-shadow:
-		-1px -1px 0 #172323, 0px -1px 0 #172323, 1px -1px 0 #172323,
-		-1px  0px 0 #172323,                     1px 0px 0 #172323,
-		-1px  1px 0 #172323, 0px  1px 0 #172323, 1px 1px 0 #172323;
-	line-height: 18px;
-	text-align: center;
-	vertical-align: middle;
-	background-color: var(--box-background-color);
-	animation: SubsAni 50 0.2s normal;
-	animation-timing-function: steps(1, end);
+#chatWrap .chat .message {
+    white-space: pre-line;
+    word-break: break-word;
+    max-height: 200px;
+    border: 1px solid;
+    border-color: var(--box-border-up);
+    padding: 5px;
+    color: #000000;
+    font-weight: normal;
+    font-family: dotum, serif;
+    font-size: 14px;
+    background-color: #839797;
+    text-shadow: none;
+    vertical-align: middle;
+    overflow: hidden;
 }
-/* 후원 금액 */
-.chat_cheer_text {
-	display: inline-block;
-	color: #6fcf57;
-	font-weight: bold;
-	text-shadow:
-		-1px -1px 0 #172323, 0px -1px 0 #172323, 1px -1px 0 #172323,
-		-1px  0px 0 #172323,                     1px 0px 0 #172323,
-		-1px  1px 0 #172323, 0px  1px 0 #172323, 1px 1px 0 #172323;
-}
-/* 후원 아이콘 */
-.chat_cheer_text img.cheer_icon {
-	max-height: 1em;
-	vertical-align: middle;
-}
-
-/* 배경 설정. 전체적인 배경이 필요할 때 이용 */
-/*
-	<div id="background"></div>
-	<div id="chat_wrapper">
-	...
-*/
-#background {
-	position: absolute;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
-}
-
-/* 폰트 설정 */
-html {
-	font-family: NanumGothic, dotum, serif;
-	font-size: 16px;
-	color: #000000;
-}
-.chat_outer_box {
-	position: relative;
-	z-index: 0;
-	overflow: hidden;
-	margin-top: 8px;
-	padding: 4px;
-}
-.chat_upper_box {
-	box-sizing: border-box;
-	border: 1px solid;
-	border-color: var(--box-border-down);
-	width: 100%;
-	height: 25px;
-	padding: 3px;
-	font-weight: bold;
-	font-family: dotum, serif;
-	text-shadow: 1px 1px 0 #101010;
-	color: #ffffff;
-	text-align: center;
-	font-size: 14px;
-	vertical-align: middle;
-	background-color: #2f4343;
-}
-.chat_nickname_box {
-	display: inline-block;
-	margin-top: 1px;
-}
-.chat_badge_box {
-	display: inline-block;
-	float: right;
-}
-.chat_outer_box .chat_msg_box,
-.chat_lower_box	{
-	clear: right;
-}
-
-.chat_msg_box {
-	white-space: pre-line;
-	word-break: break-word;
-	max-height: 200px;
-	border: 1px solid;
-	border-color: var(--box-border-up);
-	padding: 5px;
-	color: #000000;
-	font-weight: normal;
-	font-family: dotum, serif;
-	font-size: 14px;
-	background-color: #839797;
-	text-shadow: none;
-	vertical-align: middle;
-	overflow: hidden;
-}
-.chat_msg_box.image_only {
-	text-align: center;
-}
-
-
-
-/* 클립이 포함된 채팅 메세지에 대한 설정 */
-/* 크롬 등 보안설정된 브라우저에선 디버그가 불가능하므로 유의 */
-/*
-	<div class="chat_outer_box clip_included">
-		<div class="chat_inner_box">
-			...
-		</div>
-		<div class="chat_msg_box">
-			<div class="chat_clip_box">
-				<img src="https://clips-media-assets.twitch.tv/*-preview.jpg">
-				<div class="chat_clip_title">이걸 스트리머가 또</div>
-				<div class="chat_clip_by">Clipped by 맛물</div>
-			</div>
-			...
-	클립 로드에 실패했을 경우
-			<div class="chat_clip_box text_only invalid text_only">
-				Invalid Clip
-			</div>
-			...
-	클립 미리보기를 미표시설정했을 경우(configData.loadClipPreview == false)
-			<div class="chat_clip_box text_only">
-				(configData.clipReplaceMsg)
-			</div>
-			...
-	0.3.0 버전과 그 이후
-	<div class="chat_outer_box clip_included">
-		<div class="chat_upper_box">
-			...
-		</div>
-		<div class="chat_lower_box">
-			<div class="chat_clip_box">
-				<img src...>
-				<div class="chat_clip_title">...</div>
-				<div class="chat_clip_by">...</div>
-			</div>
-			<div class="chat_msg_box">
-			</div>
-			...
-*/
-.clip_included .chat_msg_box /* SOON DEPRECATED */
-{
-	/* 클립과 일반 텍스트를 같이 보냈을 경우를 위해 높이를 높여준다 */
-	max-height: 160px;
-}
-
-.chat_clip_box {
-	/* .chat_clip_by의 absolute position을 위해 설정 */
-	position: relative;
-}
-
-.chat_clip_box img {
-	float: left;
-	border-width: 1px 0 1px 1px;
-	border-style: solid;
-	border-color: var(--box-border-up);
-	height: 56px;
-}
-.chat_clip_title {
-	border-width: 1px 1px 1px 0;
-	border-style: solid;
-	border-color: var(--box-border-up);
-	background-color: var(--box-background-color);
-
-	/* 가로세로로 모두 가운데정렬하기 위해 사용. .chat_clip_box img의 높이와 맞춰준다 */
-	line-height: 56px;
-	text-align: center;
-
-	/* 제목이 길 경우를 대비 */
-	white-space: pre;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.chat_clip_by {
-	/* .chat_clip_box의 우하단에 배치 */
-	position: absolute;
-	bottom: 0.5em;
-	right: 0.5em;
-
-	/* config client로 조절하지 않는 글꼴크기이므로 .chat_msg_box에서 상속받아 조절 */
-	font-size: 0.7em;
-}
-
-.chat_clip_box.text_only {
-	border: 1px solid;
-	border-color: var(--box-border-up);
-	background-color: #839797;
-	padding: 5px;
-	text-align: center;
-}
-.chat_clip_box ~ .chat_msg_box.image_only {
-	display: none;
+#chatWrap .chat .platform {
+    position: absolute;
+    right: 0;
 }

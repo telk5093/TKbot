@@ -7,12 +7,22 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="/js/chat.js"></script>
+    <!-- <script src="/config/telk5093.json"></script> -->
     
     <link rel="stylesheet" type="text/css" href="./css/chat/default.css" />
+    <link rel="stylesheet" type="text/css" href="" class="theme" />
 </head>
 
 <body>
 	<div id="background"></div>
-    <div id="chatWrap"></div>
+    <div id="chatWrap">
+        <div class="chat" data-userid="System" data-time="0">
+            <div class="header">
+                <div class="platform"></div>
+                <div class="username">System</div>
+            </div>
+            <div class="message">채팅 접속 완료</div>
+        </div>
+    </div>
 </body>
 </html>

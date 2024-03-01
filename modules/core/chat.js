@@ -75,7 +75,11 @@ var send = exports.send = (data) => {
     if (!data.uid) {
         return;
     }
-    if (data.username === 'TKbot') {
+    if (
+        data.username === 'TKbot'
+        && data.message.substring(0, 9) !== '[OpenTTD]'
+        && data.message.substring(0, 11) !== '[Minecraft]'
+    ) {
         return;
     }
     if (chatio) {
@@ -84,6 +88,7 @@ var send = exports.send = (data) => {
             'userid': data.userid,
             'username': data.username,
             'message': data.message,
+            'emotes': data.emotes,
             'time': data.time,
         });
     }

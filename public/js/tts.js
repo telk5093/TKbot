@@ -25,23 +25,92 @@ const config = {
 
     // on message
     socket.on('data', (data) => {
+        let username = String(data.username);
+        let message = data.message;
+
+        // 느낌표로 시작하는 메시지는 읽지 않음
+        if (message.match(/^!.*/g)) {
+            return;
+        }
+
+        // [OpenTTD] 생략
+        if (message.match(/^\[OpenTTD\] /ig)) {
+            if (message.match(/^\[OpenTTD\] <(.+?)> /ig)) {
+                message = message.replace(/^\[(OpenTTD|Minecraft)\] <(.+?)> (.+?)/ig, '$3');
+            } else {
+                return;
+            }
+        }
+
+        // 채팅 관리자가 아니면 120자가 넘는 메시지는 읽지 않음
+        if (!data.isMod && message.length > 120) {
+            return;
+        }
+
         // 구글 음성합성 초기화
         if ('speechSynthesis' in window) {
-            if (!data.message) {
+            if (!message) {
                 return false;
             }
 
-            // 재생
-            let msg = new SpeechSynthesisUtterance(data.message);
+            // Personality 적용
+            let personality_int1 = 0;
+            let personality_int2 = 0;
+            for (let i = 0; i < username.length; i++) {
+                personality_int1 += username.charCodeAt(i);
+                personality_int2 |= username.charCodeAt(i);
+            }
+            personality_int1 %= ((config.tts.personality_speed[1] * 100 - config.tts.personality_speed[0] * 100) + 1);
+            personality_int2 %= ((config.tts.personality_pitch[1] * 100 - config.tts.personality_pitch[0] * 100) + 1);
+
+            let p_speed = 1 + (personality_int1 / 100) - (1 - config.tts.personality_speed[0]);
+            p_speed = Math.floor(Math.min(p_speed, config.tts.personality_speed[1]) * 100) / 100;
+
+            let p_pitch = 1 + (personality_int2 / 100) - (1 - config.tts.personality_pitch[0]);
+            p_pitch = Math.floor(Math.min(p_pitch, config.tts.personality_pitch[1]) * 100) / 100;
+
+            // 링크는 "링크"로 읽음
+            message = message.replace(/https?:\/\/clips\.twitch\.tv\/([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g, '클립');
+            message = message.replace(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g, '링크');
+
+            message = message.replace(/\?{2,}/g, '?');   // 물음표는 한 번만 읽음
+            message = message.replace(/(\?!){2,}/g, '?!');
+            message = message.replace(/(!\?){2,}/g, '!?');
+
+            // 이모티콘 치환
+            if (data.emotes && Object.keys(data.emotes).length > 0) {
+                for (let _emoteKey in data.emotes) {
+                    let _emoteUrl = data.emotes[_emoteKey];
+
+                    switch (data.platform) {
+                        case 'chzzk':
+                            message = message.replace(new RegExp('\{:' + _emoteKey + ':\}', 'ig'), '');
+                            break;
+                        case 'twitch':
+                            message = message.replace(new RegExp(_emoteKey, 'ig'), _emoteKey);
+                        default:
+                    }
+                }
+            }
+
+            // #(int)는 읽지 않음
+            message = message.replace(/^#([0-9]+)/g, '');
+            message = message.replace(/[\[\]\(\)\{\}<>]/g, '');   // ? [ ] { } ( )는 읽지 않음
+            message = message.replace(/\ud83d[\ude00-\ude4f]/g, '');   // 이모지는 읽지 않음
+            message = message.replace(/~{2,}/g, '~');   // 물결표는 한번만 읽음
+            message = message.replace(/(키읔){3,}/g, '키읔키읔키읔');   // ㅋ이 3번 이상 있으면 3번만 읽음
+            message = message.replace(/(.)\1{9,}/g, '');   // 이외 모든 글자가 10번 이상 연속으로 있으면 삭제(읽지 않음)
+            message = message.replace(/SSSsss/g, '');   // 트위치 크리퍼 이모티콘 SSSsss는 읽지 않음
+            message = message.replace(/&(.*?);/g, '');   // &~~~;와 같은 엔티티 문자는 읽지 않음
 
             // 언어 탐지
             let lang = 'en-GB';
 
-            if (/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(data.message)) {   // 한국어
+            if (/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(message)) {   // 한국어
                 lang = 'ko-KR';
-            } else if (/[\u3040-\u30ff\u31f0-\u31ff]/.test(data.message)) {   // 일본어
+            } else if (/[\u3040-\u30ff\u31f0-\u31ff]/.test(message)) {   // 일본어
                 lang = 'ja-JP';
-            } else if (/[\u0400-\u04FF]/.test(data.message)) {   // 러시아어
+            } else if (/[\u0400-\u04FF]/.test(message)) {   // 러시아어
                 lang = 'ru-RU';
             } else {
                 lang = 'en-US';
@@ -60,28 +129,11 @@ const config = {
                 voice_lang = 0;
             }
 
-            // Personality 적용
-            let username = String(data.username);
-            let personality_int1 = 0;
-            let personality_int2 = 0;
-            for (let i = 0; i < username.length; i++) {
-                personality_int1 += username.charCodeAt(i);
-                personality_int2 |= username.charCodeAt(i);
-            }
-            personality_int1 %= ((config.tts.personality_speed[1] * 100 - config.tts.personality_speed[0] * 100) + 1);
-            personality_int2 %= ((config.tts.personality_pitch[1] * 100 - config.tts.personality_pitch[0] * 100) + 1);
-
-            let p_speed = 1 + (personality_int1 / 100) - (1 - config.tts.personality_speed[0]);
-            p_speed = Math.floor(Math.min(p_speed, config.tts.personality_speed[1]) * 100) / 100;
-
-            let p_pitch = 1 + (personality_int2 / 100) - (1 - config.tts.personality_pitch[0]);
-            p_pitch = Math.floor(Math.min(p_pitch, config.tts.personality_pitch[1]) * 100) / 100;
-
-            // console.log(lang, voice_lang, window.speechSynthesis.getVoices()[voice_lang]);
-
+            // 재생
+            let msg = new SpeechSynthesisUtterance(message);
             msg.type = 'default';
-            msg.message = data.message;
-            msg.from = data['display-name'];
+            msg.message = message;
+            msg.from = username;
             msg.lang = lang;
             msg.voice = window.speechSynthesis.getVoices()[voice_lang];
             msg.rate = p_speed;
