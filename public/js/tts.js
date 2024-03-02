@@ -118,6 +118,9 @@ $(document).ready(async function() {
         // [OpenTTD] 생략
         if (message.match(/^\[OpenTTD\] /ig)) {
             if (message.match(/^\[OpenTTD\] <(.+?)> /ig)) {
+                if (message.match(/^\[OpenTTD\] <(.+?)> (.+?)에 돈을 보냈습니다 \(￡([0-9,]+)\)/ig)) {
+                    return;
+                }
                 message = message.replace(/^\[(OpenTTD|Minecraft)\] <(.+?)> (.+?)/ig, '$3');
             } else {
                 return;
