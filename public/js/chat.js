@@ -1,20 +1,19 @@
-var channelConfig = {};
+var channelConfigDccon = {};
 var dcconKeywords = [];
 var dcConsData = [];
 var twitchConsUrlTemplate = "https://static-cdn.jtvnw.net/emoticons/v2/";
 
-$(document).ready(async function () {
-    var socket = io('/chat');
-    if (!socket) {
-        alert('접속 실패');
-    }
-
+$(document).ready(async function() {
     // 채널 ID
     var channelId = window.location.hash.replace(/^#/ig, '');
-
     if (!channelId) {
         alert('잘못된 접근입니다');
         return;
+    }
+
+    var socket = io('/chat');
+    if (!socket) {
+        alert('접속 실패');
     }
 
     // join to channel
@@ -53,11 +52,11 @@ $(document).ready(async function () {
     }
 
     // 디씨콘 불러오기
-    channelConfig = await $.getJSON('/config/chat/' + channelId + '.json');
+    channelConfigDccon = await $.getJSON('/config/chat/' + channelId + '.json');
 
     // 디씨콘 불러오기
     let dcconScript = document.createElement('script');
-    dcconScript.src = channelConfig.dccon.baseUrl + channelConfig.dccon.js;
+    dcconScript.src = channelConfigDccon.dccon.baseUrl + channelConfigDccon.dccon.js;
     document.body.appendChild(dcconScript);
     dcconScript.onload = function () {
         dcconKeywords = [];
@@ -177,7 +176,7 @@ function applyDccon(message) {
                 new RegExp('~(' + keyword.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + ')([BCHGVXRLISM]*)', 'ig'),
                 function(m, dcconKeyword, dcconAdditionalStyle) {
                     var dcconBackgroundImage = [];
-                    dcconBackgroundImage.push('url(' + channelConfig.dccon.baseUrl + channelConfig.dccon.image + dcConsData.find(function(element) {
+                    dcconBackgroundImage.push('url(' + channelConfigDccon.dccon.baseUrl + channelConfigDccon.dccon.image + dcConsData.find(function(element) {
                         return element.keywords.indexOf(keyword) != -1;
                     }).name + ')');
                     let specialStyle = [];

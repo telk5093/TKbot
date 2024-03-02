@@ -87,20 +87,19 @@ const config = {
 };
 
 $(document).ready(async function() {
+    // 채널 ID
+    var channelId = window.location.hash.replace(/^#/ig, '');
+    if (!channelId) {
+        alert('잘못된 접근입니다');
+        return;
+    }
+
     // TTS 설정 불러오기
     channelConfigTTS = await $.getJSON('/config/tts/' + channelId + '.json');
 
     var socket = io('/chat');
     if (!socket) {
         alert('접속 실패');
-    }
-
-    // 채널 ID
-    var channelId = window.location.hash.replace(/^#/ig, '');
-
-    if (!channelId) {
-        alert('잘못된 접근입니다');
-        return;
     }
 
     // join to channel
