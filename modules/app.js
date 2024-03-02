@@ -16,10 +16,22 @@ var modules = module.parent.exports.modules;
  */
 router.get('/config/chat/:uid\.json', (req, res) => {
     let uid = req.params.uid;
-    let content = '';
+    let contents = '';
     if (fs.existsSync(__dirname + '/../config/channels/' + uid + '.json')) {
         let _channelConfig = lib.readJSON(__dirname + '/../config/channels/' + uid + '.json');
         contents = JSON.stringify(_channelConfig.chat);
+    } else {
+        contents = 'Invalid username';
+    }
+    res.writeHead(200, {'Content-Type': 'text/json; charset=utf-8'});
+    res.end(contents);
+});
+router.get('/config/tts/:uid\.json', (req, res) => {
+    let uid = req.params.uid;
+    let contents = '';
+    if (fs.existsSync(__dirname + '/../config/channels/' + uid + '.json')) {
+        let _channelConfig = lib.readJSON(__dirname + '/../config/channels/' + uid + '.json');
+        contents = JSON.stringify(_channelConfig.tts);
     } else {
         contents = 'Invalid username';
     }
