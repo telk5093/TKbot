@@ -19,7 +19,6 @@ const lib = require(__dirname + '/lib/lib.js');
 var modules = exports.modules = {};
 var userList = exports.userList = [];
 var channelsConfig = exports.channelsConfig = {};
-var fetch = exports.fetch = null;
 
 
 /**
@@ -41,19 +40,19 @@ app.use(express.static('public'));
 
 // http
 var http = exports.http = require('http').createServer(app);
-http.listen(config.static_port, () => {
-    console.log('[INFO] Static file service and socket server(http) has been started at ' + config.static_port + ' port');
+http.listen(config.staticPortHTTP, () => {
+    console.log('[INFO] Static file service and socket server(http) has been started at ' + config.staticPortHTTP + ' port');
 });
 
 // https
-if (config.use_https) {
+if (config.useHTTPS) {
     const credentials = {
-        key: fs.readFileSync(__dirname + config.http_credentials.key),
-        cert: fs.readFileSync(__dirname + config.http_credentials.cert),
+        key: fs.readFileSync(__dirname + config.httpCredentials.key),
+        cert: fs.readFileSync(__dirname + config.httpCredentials.cert),
     };
     var https = exports.https = require('https').createServer(credentials, app);
-    https.listen(config.static_port + 1, () => {
-        console.log('[INFO] Static file service and socket server(https) has been started at ' + (config.static_port + 1) + ' port');
+    https.listen(config.staticPortHTTPS, () => {
+        console.log('[INFO] Static file service and socket server(https) has been started at ' + (config.staticPortHTTPS) + ' port');
     });
 }
 
@@ -84,7 +83,7 @@ var init = async () => {
         }
 
         // Socket
-        var io = exports.io = socketio(config.use_https ? https : http);
+        var io = exports.io = socketio(config.useHTTPS ? https : http);
         var chatio = exports.chatio = io.of('/chat');
         // io.on('connection', (_socket) => {
         //     let ip = _socket.handshake.address;
