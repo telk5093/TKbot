@@ -10,7 +10,7 @@ var exports = module.exports = {
 	staticPortHTTPS: 27511,
 
     // Use https
-    useHTTPS: false,
+    useHTTPS: true,
     httpsCredentials: {
         key: '/key/privkey.pem',
         cert: '/key/fullchain.pem',
