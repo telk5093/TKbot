@@ -4,3 +4,4 @@ config/auth.js
 config/channels.json
 config/channels/*.json
 key/
+sessions/

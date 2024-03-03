@@ -3,34 +3,22 @@
 <head>
     <meta charset="utf-8" />
     <title>TKbot - Join</title>
-
-    <style type="text/css">
-    input[type="text"] {
-        margin-bottom: 5px;
-        border: 1px solid #aaaaaa;
-        padding: 6px 15px;
-        border-radius: 5px;
-        width: 430px;
-    }
-    </style>
+    <link rel="stylesheet" type="text/css" href="./css/common.css" />
 </head>
 
 <body>
     <form name="frm" method="post" action="/join">
-        <input type="text" name="channelUid" placeholder="TKbot uid를 입력하세요 (eg. telk5093)" />
-        <br /><br />
-    
-        <input type="text" name="chzzk" placeholder="치지직 uid를 입력하세요 (eg. c6f75be90a32cac61524e91db7648f98)" />
+        <b>치지직:</b> <input type="text" name="chzzkId" placeholder="치지직 uid를 입력하세요 (eg. c6f75be90a32cac61524e91db7648f98)" value="{@chzzkId}" />
         <br />
 
-        <input type="text" name="youtube" placeholder="YouTube id를 입력하세요 (eg. UC0NExSLd9TFBcEX0ye8I1dw)" />
+        <b>YouTube:</b> <input type="text" name="youtubeId" placeholder="YouTube id를 입력하세요 (eg. UC0NExSLd9TFBcEX0ye8I1dw)" value="{@youtubeId}" />
         <br />
 
-        <input type="text" name="twitch" placeholder="twitch id를 입력하세요 (eg. telk5093)" />
+        <b>Twitch:</b> <input type="text" name="twitchId" placeholder="twitch id를 입력하세요 (eg. telk5093)" value="{@twitchId}" />
         <br />
 
-        <input type="text" name="kick" placeholder="kick id를 입력하세요 (eg. telk5093)" />
-        <br />
+        <!-- <input type="text" name="kick" placeholder="kick id를 입력하세요 (eg. telk5093)" value="{@kickId}" />
+        <br /> -->
 
         <br />
         <button type="submit">입장</button>
