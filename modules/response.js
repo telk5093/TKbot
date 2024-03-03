@@ -62,7 +62,6 @@ var findAlias = (msg, alias) => {
 /**
  * Response
  * @param Object data                   Message data object
- * @param function callback             A function to send message
  */
 var init = exports.init = (data) => {
     let message = data.message;

@@ -82,6 +82,8 @@ var send = exports.send = (data) => {
     ) {
         return;
     }
+
+    // Chat/TTS
     if (chatio) {
         chatio.to(data.uid).emit('data', {
             'platform': data.platform,
