@@ -49,12 +49,21 @@ router.get('/join', (req, res) => {
     res.end(contents);
 });
 router.post('/join', (req, res) => {
+    let channelUid = req.body.channelUid;
     let chzzk = req.body.chzzk;
     let youtube = req.body.youtube;
     let twitch = req.body.twitch;
     let kick = req.body.kick;
 
-    modules['core/chzzk'].join(chzzk);
+    if (chzzk) {
+        modules['core/chzzk'].join(channelUid, chzzk);
+    }
+    if (youtube) {
+        modules['core/youtube'].join(channelUid, youtube);
+    }
+    if (twitch) {
+        modules['core/twitch'].join(channelUid, twitch);
+    }
     res.end('Done');
 });
 

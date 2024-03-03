@@ -3,10 +3,23 @@
 <head>
     <meta charset="utf-8" />
     <title>TKbot - Join</title>
+
+    <style type="text/css">
+    input[type="text"] {
+        margin-bottom: 5px;
+        border: 1px solid #aaaaaa;
+        padding: 6px 15px;
+        border-radius: 5px;
+        width: 430px;
+    }
+    </style>
 </head>
 
 <body>
     <form name="frm" method="post" action="/join">
+        <input type="text" name="channelUid" placeholder="TKbot uid를 입력하세요 (eg. telk5093)" />
+        <br /><br />
+    
         <input type="text" name="chzzk" placeholder="치지직 uid를 입력하세요 (eg. c6f75be90a32cac61524e91db7648f98)" />
         <br />
 

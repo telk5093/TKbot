@@ -17,6 +17,9 @@ var channelsConfig = module.parent.exports.channelsConfig;
 var youtubeChatSent = [];
 var youtubeLiveId = null;
 
+/**
+ * Init
+ */
 var init = exports.init = (data) => {
     for (let _channelUid in channelsConfig) {
         let _channelId = channelsConfig[_channelUid].channels.youtube;
@@ -24,75 +27,6 @@ var init = exports.init = (data) => {
             continue;
         }
 
-        const youtubeChat = exports.youtubeChat = new LiveChat({
-            channelId: _channelId
-        });
-
-        var youtubeChat_switch = false;
-        youtubeChat.on('start', (liveId) => {
-            console.log('[youtube.js] Connected at %s', liveId);
-            youtubeLiveId = liveId;
-            setTimeout(function() {
-                youtubeChat_switch = true;
-            }, 3000);
-        });
-        youtubeChat.on('end', (reason) => {
-            console.log('[youtube.js] disconnected');
-            youtubeLiveId = null;
-        });
-        youtubeChat.on('chat', (chatItem) => {
-            if (!youtubeChat_switch) {
-                return;
-            }
-            if (youtubeChatSent.indexOf(chatItem.id) >= 0) {
-                return;
-            }
-            youtubeChatSent.push(chatItem.id);
-            let username = chatItem.author.name;
-            let userid = chatItem.author.channelId;
-            let isMod = chatItem.isModerator;
-            let isStreamer = chatItem.isOwner;
-            let message = '';
-            for (let i in chatItem.message) {
-                if (chatItem.message[i].text) {
-                    message += chatItem.message[i].text;
-                }
-            }
-
-            console.log('[youtube.js] ' + _channelId + ' > ' + username + ' >>> ' + message);
-
-            // Add user
-            if (!(userid in userList)) {
-                userList[userid] = {
-                    'username': username,
-                    // 'followed': (followingDate ? followingDate : null),
-                    'lastchat': new Date(),
-                    'isMod': isMod,
-                    'isStreamer': isStreamer,
-                };
-            }
-
-            // Send a chat message
-            modules['core/chat'].send({
-                'platform': 'youtube',
-                'uid': _channelUid,
-                'to': _channelId,
-                'username': username,
-                'userid': userid,
-                'message': message,
-                'isMod': isMod,
-                'time': (new Date(chatItem.timestamp)).getTime(),
-                'callback': youtubeChat,
-                'method': '',
-                // 'client': client,
-            });
-        });
-        youtubeChat.on('error', (err) => {});
-
-        startYouTubeChat(youtubeChat);
-        setInterval(function() {
-            startYouTubeChat(youtubeChat);
-        }, 10 * 1000);
     }
 }
 
@@ -105,4 +39,89 @@ var startYouTubeChat = (youtubeChat) => {
     if (!ok) {
         console.log('[youtube.js] Failed to start, check emitted error');
     }
+};
+
+/**
+ * Join
+ */
+var join = exports.join = (channelUid, channelId) => {
+    let channelConfig = lib.loadChannelConfig(channelUid);
+    channelConfig.channels.youtube = channelId;
+    lib.saveChannelConfig(channelUid, channelConfig);
+    connect(channelUid, channelId);
+};
+
+/**
+ * Connect
+ */
+var connect = exports.connect = async (channelUid, channelId) => {
+    const youtubeChat = exports.youtubeChat = new LiveChat({
+        channelId: _channelId
+    });
+
+    var youtubeChat_switch = false;
+    youtubeChat.on('start', (liveId) => {
+        console.log('[youtube.js] Connected at %s', liveId);
+        youtubeLiveId = liveId;
+        setTimeout(function() {
+            youtubeChat_switch = true;
+        }, 3000);
+    });
+    youtubeChat.on('end', (reason) => {
+        console.log('[youtube.js] disconnected');
+        youtubeLiveId = null;
+    });
+    youtubeChat.on('chat', (chatItem) => {
+        if (!youtubeChat_switch) {
+            return;
+        }
+        if (youtubeChatSent.indexOf(chatItem.id) >= 0) {
+            return;
+        }
+        youtubeChatSent.push(chatItem.id);
+        let username = chatItem.author.name;
+        let userid = chatItem.author.channelId;
+        let isMod = chatItem.isModerator;
+        let isStreamer = chatItem.isOwner;
+        let message = '';
+        for (let i in chatItem.message) {
+            if (chatItem.message[i].text) {
+                message += chatItem.message[i].text;
+            }
+        }
+
+        console.log('[youtube.js] @' + channelUid + ' <' + username + '> ' + message);
+
+        // Add user
+        if (!(userid in userList)) {
+            userList[userid] = {
+                'username': username,
+                // 'followed': (followingDate ? followingDate : null),
+                'lastchat': new Date(),
+                'isMod': isMod,
+                'isStreamer': isStreamer,
+            };
+        }
+
+        // Send a chat message
+        modules['core/chat'].send({
+            'platform': 'youtube',
+            'uid': channelUid,
+            'to': channelId,
+            'username': username,
+            'userid': userid,
+            'message': message,
+            'isMod': isMod,
+            'time': (new Date(chatItem.timestamp)).getTime(),
+            'callback': youtubeChat,
+            'method': '',
+            // 'client': client,
+        });
+    });
+    youtubeChat.on('error', (err) => {});
+
+    startYouTubeChat(youtubeChat);
+    setInterval(function() {
+        startYouTubeChat(youtubeChat);
+    }, 10 * 1000);
 };
