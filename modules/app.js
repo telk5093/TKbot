@@ -38,7 +38,7 @@ router.post('/', (req, res) => {
         res.end('Invalid userid <a href="/">Back</a>');
     } else {
         if (channelConfig.password == password) {
-            req.session.userid = userid;
+            req.session.userid = channelUid;
             req.session.save(function() {
                 res.redirect('/');
             });
