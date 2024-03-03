@@ -29,10 +29,10 @@ router.get('/', (req, res) => {
     }
 });
 router.post('/', (req, res) => {
-    let userid = req.body.userid;
+    let channelUid = String(req.body.userid).trim();
     let password = crypto.createHash('sha256').update('tkbot_' + req.body.password + '_bot312!').digest('hex');
 
-    let channelConfig = lib.loadChannelConfig(userid);
+    let channelConfig = lib.loadChannelConfig(channelUid);
     if (!channelConfig) {
         res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
         res.end('Invalid userid <a href="/">Back</a>');
@@ -99,10 +99,10 @@ router.get('/join', (req, res) => {
     }
 
     let contents = String(fs.readFileSync(__dirname + '/../public/join.html'));
-    contents = contents.replace(/\{@chzzkId\}/ig, channelConfig.channels.chzzk);
-    contents = contents.replace(/\{@youtubeId\}/ig, channelConfig.channels.youtube);
-    contents = contents.replace(/\{@twitchId\}/ig, channelConfig.channels.twitch);
-    // contents = contents.replace(/\{@kickId\}/ig, channelConfig.channels.kick);
+    contents = contents.replace(/\{@chzzkId\}/ig, channelConfig.channels.chzzk ?? '');
+    contents = contents.replace(/\{@youtubeId\}/ig, channelConfig.channels.youtube ?? '');
+    contents = contents.replace(/\{@twitchId\}/ig, channelConfig.channels.twitch ?? '');
+    // contents = contents.replace(/\{@kickId\}/ig, channelConfig.channels.kick ?? '');
     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
     res.end(contents);
 });
@@ -112,21 +112,31 @@ router.post('/join', (req, res) => {
         res.redirect('/logout');
     }
 
-    let chzzk = req.body.chzzk;
-    let youtube = req.body.youtube;
-    let twitch = req.body.twitch;
-    // let kick = req.body.kick;
+    let chzzkId = req.body.chzzkId;
+    let youtubeId = req.body.youtubeId;
+    let twitchId = req.body.twitchId;
+    // let kickId = req.body.kickId;
 
-    if (chzzk) {
-        modules['core/chzzk'].join(channelUid, chzzk);
+    if (chzzkId) {
+        modules['core/chzzk'].join(channelUid, chzzkId);
+    } else {
+        modules['core/chzzk'].quit(channelUid);
     }
-    if (youtube) {
-        modules['core/youtube'].join(channelUid, youtube);
+    if (youtubeId) {
+        modules['core/youtube'].join(channelUid, youtubeId);
+    } else {
+        modules['core/youtube'].quit(channelUid);
     }
-    if (twitch) {
-        modules['core/twitch'].join(channelUid, twitch);
+    if (twitchId) {
+        modules['core/twitch'].join(channelUid, twitchId);
+    } else {
+        modules['core/twitch'].quit(channelUid);
     }
-    res.end('Done');
+    // if (kickId) {
+    //     modules['core/kick'].join(channelUid, kickId);
+    // }
+    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+    res.end('Done <a href="/">Back</a>');
 });
 
 

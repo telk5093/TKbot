@@ -13,7 +13,7 @@ var io = module.parent.exports.io;
 var modules = module.parent.exports.modules;
 var userList = module.parent.exports.userList;
 var channelsConfig = module.parent.exports.channelsConfig;
-
+var youtubeClients = [];
 var youtubeChatSent = [];
 var youtubeLiveId = null;
 
@@ -52,11 +52,31 @@ var join = exports.join = (channelUid, channelId) => {
 };
 
 /**
+ * Quit
+ */
+var quit = exports.quit = (channelUid) => {
+    let channelConfig = lib.loadChannelConfig(channelUid);
+    channelConfig.channels.youtube = null;
+    lib.saveChannelConfig(channelUid, channelConfig);
+
+    if (youtubeClients[channelUid] && (typeof youtubeClients[channelUid].stop === 'function')) {
+        console.log('[youtube.js] Disconnectd from @%s', channelUid);
+        youtubeClients[channelUid].stop();
+        delete youtubeClients[channelUid];
+    }
+};
+
+/**
  * Connect
  */
 var connect = exports.connect = async (channelUid, channelId) => {
+    if (youtubeClients[channelUid] && (typeof youtubeClients[channelUid].start === 'function')) {
+        // console.log('[youtube.js] Already connected to @%s', channelUid);
+        return;
+    }
+
     const youtubeChat = exports.youtubeChat = new LiveChat({
-        channelId: _channelId
+        channelId: channelId
     });
 
     var youtubeChat_switch = false;
@@ -124,4 +144,6 @@ var connect = exports.connect = async (channelUid, channelId) => {
     setInterval(function() {
         startYouTubeChat(youtubeChat);
     }, 10 * 1000);
+
+    youtubeClients[channelUid] = youtubeChat;
 };

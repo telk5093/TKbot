@@ -13,6 +13,7 @@ var io = module.parent.exports.io;
 var modules = module.parent.exports.modules;
 var userList = module.parent.exports.userList;
 var channelsConfig = module.parent.exports.channelsConfig;
+var twitchClients = [];
 
 /**
  * Init
@@ -39,10 +40,30 @@ var join = exports.join = (channelUid, channelId) => {
 };
 
 /**
+ * Quit
+ */
+var quit = exports.quit = (channelUid) => {
+    let channelConfig = lib.loadChannelConfig(channelUid);
+    channelConfig.channels.twitch = null;
+    lib.saveChannelConfig(channelUid, channelConfig);
+
+    if (twitchClients[channelUid] && (typeof twitchClients[channelUid].disconnect === 'function')) {
+        console.log('[twitch.js] Disconnectd from @%s', channelUid);
+        twitchClients[channelUid].disconnect();
+        delete twitchClients[channelUid];
+    }
+};
+
+/**
  * Connect
  */
 var connect = exports.connect = async (channelUid, channelId) => {
-    var twitchChat = exports.twitchChat = new tmi.client({
+    if (twitchClients[channelUid] && (typeof twitchClients[channelUid].connect === 'function')) {
+        // console.log('[twitch.js] Already connected to @%s', channelUid);
+        return;
+    }
+
+    let twitchChat = exports.twitchChat = new tmi.client({
         channels: [
             channelId,
         ],
@@ -173,4 +194,7 @@ var connect = exports.connect = async (channelUid, channelId) => {
             // 'client': client,
         });
     });
+    
+
+    twitchClients[channelUid] = twitchChat;
 };

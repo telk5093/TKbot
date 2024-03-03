@@ -13,7 +13,7 @@ var io = module.parent.exports.io;
 var modules = module.parent.exports.modules;
 var userList = module.parent.exports.userList;
 var channelsConfig = module.parent.exports.channelsConfig;
-
+var chzzkClients = [];
 
 /**
  * Init
@@ -40,9 +40,29 @@ var join = exports.join = (channelUid, channelId) => {
 };
 
 /**
+ * Quit
+ */
+var quit = exports.quit = (channelUid) => {
+    let channelConfig = lib.loadChannelConfig(channelUid);
+    channelConfig.channels.chzzk = null;
+    lib.saveChannelConfig(channelUid, channelConfig);
+
+    if (chzzkClients[channelUid] && (typeof chzzkClients[channelUid].disconnect === 'function')) {
+        console.log('[chzzk.js] Disconnectd from @%s', channelUid);
+        chzzkClients[channelUid].disconnect();
+        delete chzzkClients[channelUid];
+    }
+};
+
+/**
  * Connect
  */
 var connect = exports.connect = async (channelUid, channelId) => {
+    if (chzzkClients[channelUid] && (typeof chzzkClients[channelUid].connect === 'function')) {
+        // console.log('[chzzk.js] Already connected to @%s', channelUid);
+        return;
+    }
+
     const client = new ChzzkClient({
         nidAuth: auth.bot.chzzk.nidAuth,
         nidSession: auth.bot.chzzk.nidSession,
@@ -177,4 +197,6 @@ var connect = exports.connect = async (channelUid, channelId) => {
 
     // Connect
     await chzzkChat.connect();
+
+    chzzkClients[channelUid] = chzzkChat;
 };
