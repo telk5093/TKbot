@@ -127,6 +127,22 @@ $(document).ready(async function() {
             }
         }
 
+        // Ban user
+        for (let i in channelConfigTTS.banuser) {
+            let _banUser = channelConfigTTS.banuser[i];
+            if (username == _banUser) {
+                return;
+            }
+        }
+
+        // Ban word
+        for (let i in channelConfigTTS.banword) {
+            let _banWord = channelConfigTTS.banword[i];
+            if (message.indexOf(_banWord) >= 0) {
+                return;
+            }
+        }
+
         // 채팅 관리자가 아니면 120자가 넘는 메시지는 읽지 않음
         if (!data.isMod && message.length > 120) {
             return;
@@ -187,7 +203,7 @@ $(document).ready(async function() {
             message = message.replace(/(.)\1{9,}/g, '');   // 이외 모든 글자가 10번 이상 연속으로 있으면 삭제(읽지 않음)
             message = message.replace(/SSSsss/g, '');   // 트위치 크리퍼 이모티콘 SSSsss는 읽지 않음
             message = message.replace(/&(.*?);/g, '');   // &~~~;와 같은 엔티티 문자는 읽지 않음
-            
+
             // 일부 단어는 바꾸어서 읽음
             for (let _word in config.tts.replaceWord) {
                 message = message.replace(new RegExp(_word, 'g'), config.tts.replaceWord[_word]);
