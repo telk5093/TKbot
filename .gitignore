@@ -1,7 +1,6 @@
 node_modules/
 logs/
 config/auth.js
-config/config.js
 config/channels.json
 config/channels/*.json
 key/
