@@ -47,8 +47,8 @@ http.listen(config.staticPortHTTP, () => {
 // https
 if (config.useHTTPS) {
     const credentials = {
-        key: fs.readFileSync(__dirname + config.httpCredentials.key),
-        cert: fs.readFileSync(__dirname + config.httpCredentials.cert),
+        key: fs.readFileSync(__dirname + config.httpsCredentials.key),
+        cert: fs.readFileSync(__dirname + config.httpsCredentials.cert),
     };
     var https = exports.https = require('https').createServer(credentials, app);
     https.listen(config.staticPortHTTPS, () => {
