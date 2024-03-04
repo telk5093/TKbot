@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>{@title}</title>
+    <link rel="stylesheet" type="text/css" href="/css/common.css" />
+    {@cssList}
+
+    <script src="/css/common.js"></script>
+    {@jsList}
+</head>
+
+<body>
+    <header>
+        <div id="logo">TKbot</div>
+        <nav>
+            <ul>
+                <li><a href="/">Main</a></li>
+                <li><a href="/settings">Settings</a></li>
+                <li><a href="/chat#{@session:channelUid}" target="_blank">Chat</a></li>
+                <li><a href="/tts#{@session:channelUid}" target="_blank">TTS</a></li>
+                <!-- <li><a href="/logout">Logout</a></li> -->
+            </ul>
+        </nav>
+    </header>
+    <div>
+        {@content}
+    </div>
+</body>
+</html>

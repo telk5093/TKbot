@@ -1,20 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>TKbot - Join</title>
-    <link rel="stylesheet" type="text/css" href="./css/common.css" />
-</head>
+    <h1>TKbot</h1>
 
-<body>
     <form name="frm" method="post">
-        <input type="text" name="userid" placeholder="(아이디)" />
+        <input type="text" name="channelUid" placeholder="(아이디)" value="{@cookie:channelUid}" />
         <br />
         <input type="password" name="password" placeholder="(비밀번호)" />
+        <br />
+        <label><input type="checkbox" name="save_channelUid" value="1" checked /> 아이디 기억하기</label>
         <br />
         <br />
 
         <button type="submit">로그인</button>
     </form>
-</body>
-</html>

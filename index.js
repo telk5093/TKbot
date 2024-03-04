@@ -11,6 +11,7 @@ const express = require('express');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const socketio = require('socket.io');
 const lib = require(__dirname + '/lib/lib.js');
 
@@ -37,6 +38,7 @@ const app = exports.app = express();
 const appRouter = require(__dirname + '/modules/app');   // Use router from /modules/app.js
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : false }));
+app.use(cookieParser());
 app.use(session({
     secret: 'tkbot48172_$%!',	// 원하는 문자 입력
     resave: false,

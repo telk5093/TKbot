@@ -1,5 +1,61 @@
 @charset "utf8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+}
+
+body {
+    margin: 30px;
+}
+
+header {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px;
+}
+header #logo {
+    margin-right: 20px;
+    font-size: 24px;
+    font-weight: 800;
+}
+header nav ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    list-style: none;
+}
+header nav ul li a {
+    padding: 5px 10px;
+    font-size: 18px;
+}
+
+h1 {
+    font-size: 36px;
+}
+h2 {
+    font-size: 32px;
+}
+h3 {
+    font-size: 28px;
+}
+h4 {
+    font-size: 24px;
+}
+h5 {
+    font-size: 20px;
+}
+h6 {
+    font-size: 18px;
+}
 input[type="text"],
 input[type="password"],
 input[type="number"],
@@ -9,4 +65,16 @@ input[type="search"] {
     padding: 6px 15px;
     border-radius: 5px;
     width: 430px;
+}
+button {
+    border: 1px solid #aaaaaa;
+    background-color: #eeeeee;
+    padding: 5px 20px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #dddddd;
+}
+button:active {
+    background-color: #cccccc;
 }
