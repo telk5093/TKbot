@@ -8,9 +8,6 @@
     font-size: 14px;
 }
 
-body {
-    margin: 30px;
-}
 
 header {
     display: flex;
@@ -19,10 +16,12 @@ header {
     justify-content: flex-start;
     align-items: center;
     margin-bottom: 20px;
+    background-color: #c3faff;
 }
 header #logo {
-    margin-right: 20px;
+    padding: 20px 30px;
     font-size: 24px;
+    line-height: 24px;
     font-weight: 800;
 }
 header nav ul {
@@ -34,47 +33,85 @@ header nav ul {
     list-style: none;
 }
 header nav ul li a {
-    padding: 5px 10px;
+    display: inline-block;
+    padding: 20px 30px;
+    color: #000000;
     font-size: 18px;
+    font-weight: 400;
+    text-decoration: none;
+    background-color: #a2f0f7;
+}
+header nav ul li a:hover {
+    background-color: #9ee3e9;
+}
+#content {
+    padding: 10px 30px;
 }
 
 h1 {
+    margin-bottom: 10px;
     font-size: 36px;
 }
 h2 {
+    margin-bottom: 10px;
     font-size: 32px;
 }
 h3 {
+    margin-bottom: 10px;
     font-size: 28px;
 }
 h4 {
+    margin-bottom: 10px;
     font-size: 24px;
 }
 h5 {
+    margin-bottom: 10px;
     font-size: 20px;
 }
 h6 {
+    margin-bottom: 10px;
     font-size: 18px;
 }
 input[type="text"],
 input[type="password"],
 input[type="number"],
 input[type="search"] {
-    margin-bottom: 5px;
     border: 1px solid #aaaaaa;
-    padding: 6px 15px;
+    padding: 3px 15px;
     border-radius: 5px;
     width: 430px;
+    outline: none;
 }
 button {
     border: 1px solid #aaaaaa;
     background-color: #eeeeee;
     padding: 5px 20px;
     cursor: pointer;
+    outline: none;
 }
 button:hover {
     background-color: #dddddd;
 }
 button:active {
     background-color: #cccccc;
+}
+button.xxsmall { padding: 1px 3px; font-size: 10px; }
+button.xsmall { padding: 2px 5px; font-size: 11px; }
+button.small { padding: 3px 10px; font-size: 12px; }
+button.medium { padding: 3px 15px; font-size: 14px; }
+button.large { padding: 5px 20px; font-size: 16px; }
+button.xlarge { padding: 10px 25px; font-size: 18px; }
+button.xxlarge { padding: 10px 30px; font-size: 20px; }
+table {
+    border-collapse: collapse;
+}
+table th,
+table td {
+    border: 1px solid #dddddd;
+    padding: 5px 10px;
+}
+table .head {
+    font-weight: bold;
+    text-align: center;
+    background-color: #eeeeee;
 }

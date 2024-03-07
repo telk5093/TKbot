@@ -7,22 +7,59 @@
 </head>
 
 <body>
-    <form name="frm" method="post" action="/join">
-        <b>치지직:</b> <input type="text" name="chzzkId" placeholder="치지직 uid를 입력하세요 (eg. c6f75be90a32cac61524e91db7648f98)" value="{@data:chzzkId}" />
+    <form name="frm" method="post" action="/settings">
+        <h4>채널 입장/퇴장</h4>
+        <table>
+            <thead>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="head">치지직</td>
+                    <td class="body"><input type="text" name="chzzk" placeholder="치지직 uid를 입력하세요 (eg. c6f75be90a32cac61524e91db7648f98)" value="{@data:chzzk}" /></td>
+                    <td class="body"><button type="button" class="small join">입장</button> <button type="button" class="small quit">퇴장</button></td>
+                </tr>
+                <tr>
+                    <td class="head">YouTube</td>
+                    <td class="body"><input type="text" name="youtube" placeholder="YouTube id를 입력하세요 (eg. UC0NExSLd9TFBcEX0ye8I1dw)" value="{@data:youtube}" /></td>
+                    <td class="body"><button type="button" class="small join">입장</button> <button type="button" class="small quit">퇴장</button></td>
+                </tr>
+                <tr>
+                    <td class="head">Twitch</td>
+                    <td class="body"><input type="text" name="twitch" placeholder="twitch id를 입력하세요 (eg. telk5093)" value="{@data:twitch}" /></td>
+                    <td class="body"><button type="button" class="small join">입장</button> <button type="button" class="small quit">퇴장</button></td>
+                </tr>
+                <!-- <tr>
+                    <td class="head">Kick</td>
+                    <td class="body"><input type="text" name="kick" placeholder="kick id를 입력하세요 (eg. telk5093)" value="{@data:kick}" /></td>
+                    <td class="body"><button type="button" class="join">입장</button><button type="button" class="quit">퇴장</button></td>
+                </tr> -->
+            </tbody>
+        </table>
         <br />
 
-        <b>YouTube:</b> <input type="text" name="youtubeId" placeholder="YouTube id를 입력하세요 (eg. UC0NExSLd9TFBcEX0ye8I1dw)" value="{@data:youtubeId}" />
+        <h4>디씨콘</h4>
+        <table>
+            <thead>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="head">기본 URL</td>
+                    <td class="body" colspan="2"><input type="text" name="dccon.baseUrl" placeholder="디씨콘 기본 URL을 입력하세요 (eg. https://example.com)" value="{@data:dccon.baseUrl}" /></td>
+                </tr>
+                <tr>
+                    <td class="head">JS파일 경로</td>
+                    <td class="body"><input type="text" name="dccon.js" placeholder="디씨콘 JS 파일 경로를 입력하세요 (eg. /js/dccon_list.js)" value="{@data:dccon.js}" /></td>
+                    <td class="body"><button type="button" class="small" onclick="void(window.open('{@data:dccon.baseUrl}{@data:dccon.js}'));">확인</button></td>
+                </tr>
+                <tr>
+                    <td class="head">이미지 파일 경로</td>
+                    <td class="body"><input type="text" name="dccon.image" placeholder="디씨콘 이미지 파일 경로를 입력하세요 (eg. /images/)" value="{@data:dccon.image}" /></td>
+                    <td class="body"><button type="button" class="small" onclick="void(window.open('{@data:dccon.baseUrl}{@data:dccon.image}test.png'));">확인</button></td>
+                </tr>
+            </tbody>
+        </table>
         <br />
-
-        <b>Twitch:</b> <input type="text" name="twitchId" placeholder="twitch id를 입력하세요 (eg. telk5093)" value="{@data:twitchId}" />
-        <br />
-
-        <!-- <input type="text" name="kick" placeholder="kick id를 입력하세요 (eg. telk5093)" value="{@data:kickId}" />
-        <br /> -->
-
-        <br />
-        <p>봇을 퇴장시키려면 빈 값을 입력하세요.</p>
-
+        
         <button type="submit">저장</button>
         <button type="button" onclick="location.href='/';">뒤로</button>
     </form>

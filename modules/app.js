@@ -103,7 +103,7 @@ let Doc = class {
                 let _val = req.session[_key];
                 params[_key] = _val;
             }
-            
+
             // Cookies
             for (let _key in req.cookies) {
                 let _val = req.cookies[_key];
@@ -273,45 +273,143 @@ router.get('/settings', (req, res) => {
     let doc = new Doc();
     doc.setTitle('Settings');
     doc.setView('settings');
+    doc.prepareJS('settings.js');
     doc.replace({
-        'chzzkId': channelConfig.channels.chzzk,
-        'youtubeId': channelConfig.channels.youtube,
-        'twitchId': channelConfig.channels.twitch,
-        // 'kickId': channelConfig.channels.kick,
+        'chzzk': channelConfig.channels.chzzk ?? '',
+        'youtube': channelConfig.channels.youtube ?? '',
+        'twitch': channelConfig.channels.twitch ?? '',
+        // 'kick': channelConfig.channels.kick ?? '',
+        'dccon.baseUrl': channelConfig.chat.dccon.baseUrl,
+        'dccon.js': channelConfig.chat.dccon.js,
+        'dccon.image': channelConfig.chat.dccon.image,
     });
     doc.print(req, res);
 });
-router.post('/join', (req, res) => {
+router.post('/settings', (req, res) => {
+    let output = {};
     let channelUid = req.session.channelUid;
-    if (!channelUid) {
-        res.redirect('/logout');
-    }
 
-    let chzzkId = req.body.chzzkId;
-    let youtubeId = req.body.youtubeId;
-    let twitchId = req.body.twitchId;
-    // let kickId = req.body.kickId;
+    try {
+        if (!channelUid) {
+            throw 'Please login';
+        }
 
-    if (chzzkId) {
-        modules['core/chzzk'].join(channelUid, chzzkId);
-    } else {
-        modules['core/chzzk'].quit(channelUid);
+        // Load channel's config
+        let channelConfig = lib.loadChannelConfig(channelUid);
+
+        // Change
+        channelConfig.channels.chzzk = req.body.chzzk ?? null;
+        channelConfig.channels.youtube = req.body.youtube ?? null;
+        channelConfig.channels.twitch = req.body.twitch ?? null;
+        // channelConfig.channels.kick = req.body.kick ?? null;
+
+        channelConfig.chat.dccon.baseUrl = req.body['dccon.baseUrl'] ?? null;
+        channelConfig.chat.dccon.js = req.body['dccon.js'] ?? null;
+        channelConfig.chat.dccon.image = req.body['dccon.image'] ?? null;
+
+        // Save channel's config
+        lib.saveChannelConfig(channelUid, channelConfig);
+
+        res.redirect('/settings');
+
+    } catch (e) {
+        let doc = new Doc();
+        doc.setView('error');
+        doc.setContent(e + ' <a href="/">Back</a>');
+        doc.print(req, res, 'blank');
     }
-    if (youtubeId) {
-        modules['core/youtube'].join(channelUid, youtubeId);
-    } else {
-        modules['core/youtube'].quit(channelUid);
+    res.end(JSON.stringify(output));
+});
+
+/**
+ * Join
+ */
+router.post('/join', (req, res) => {
+    let output = {};
+    let channelUid = req.session.channelUid;
+
+    try {
+        if (!channelUid) {
+            throw 'Please login';
+        }
+
+        let platform = req.body.platform;
+        let channelId = req.body.channelId;
+
+        switch (platform) {
+            case 'chzzk':
+                modules['core/chzzk'].join(channelUid, channelId);
+                break;
+            case 'youtube':
+                modules['core/youtube'].join(channelUid, channelId);
+                break;
+            case 'twitch':
+                modules['core/twitch'].join(channelUid, channelId);
+                break;
+            // case 'kick':
+            //     modules['core/kick'].join(channelUid, channelId);
+            //     break;
+        }
+
+        res.writeHead(200, {'Content-Type': 'text/json; charset=utf-8'});
+        output = {
+            'state': 'success',
+            'message': 'Success to join'
+        };
+
+    } catch (e) {
+        res.writeHead(403, {'Content-Type': 'text/json; charset=utf-8'});
+        output = {
+            'state': 'error',
+            'message': e,
+        };
     }
-    if (twitchId) {
-        modules['core/twitch'].join(channelUid, twitchId);
-    } else {
-        modules['core/twitch'].quit(channelUid);
+    res.end(JSON.stringify(output));
+});
+
+/**
+ * Quit
+ */
+router.post('/quit', (req, res) => {
+    let output = {};
+    let channelUid = req.session.channelUid;
+
+    try {
+        if (!channelUid) {
+            throw 'Please login';
+        }
+
+        let platform = req.body.platform;
+
+        switch (platform) {
+            case 'chzzk':
+                modules['core/chzzk'].quit(channelUid);
+                break;
+            case 'youtube':
+                modules['core/youtube'].quit(channelUid);
+                break;
+            case 'twitch':
+                modules['core/twitch'].quit(channelUid);
+                break;
+            // case 'kick':
+            //     modules['core/kick'].quit(channelUid);
+            //     break;
+        }
+
+        res.writeHead(200, {'Content-Type': 'text/json; charset=utf-8'});
+        output = {
+            'state': 'success',
+            'message': 'Success to quit'
+        };
+
+    } catch (e) {
+        res.writeHead(403, {'Content-Type': 'text/json; charset=utf-8'});
+        output = {
+            'state': 'error',
+            'message': e,
+        };
     }
-    // if (kickId) {
-    //     modules['core/kick'].join(channelUid, kickId);
-    // }
-    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-    res.end('Done <a href="/">Back</a>');
+    res.end(JSON.stringify(output));
 });
 
 

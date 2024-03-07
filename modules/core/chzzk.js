@@ -33,6 +33,9 @@ var init = exports.init = async () => {
  * Join
  */
 var join = exports.join = (channelUid, channelId) => {
+    if (channelId === 'null') {
+        channelId = null;
+    }
     let channelConfig = lib.loadChannelConfig(channelUid);
     channelConfig.channels.chzzk = channelId;
     lib.saveChannelConfig(channelUid, channelConfig);
@@ -196,7 +199,11 @@ var connect = exports.connect = async (channelUid, channelId) => {
     });
 
     // Connect
-    await chzzkChat.connect();
+    try {
+        await chzzkChat.connect();
+    } catch (e) {
+        console.log('[chzzk.js] Fail to connect to @%s', channelId);
+    }
 
     chzzkClients[channelUid] = chzzkChat;
 };

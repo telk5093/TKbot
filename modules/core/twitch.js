@@ -75,9 +75,13 @@ var connect = exports.connect = async (channelUid, channelId) => {
             debug: false,
         }
     });
-    twitchChat.connect().then((rst) => {
-        console.log('[twitch.js] Connected to @%s', channelId);
-    });
+    try {
+        twitchChat.connect().then((rst) => {
+            console.log('[twitch.js] Connected to @%s', channelId);
+        });
+    } catch (e) {
+        console.log('[twitch.js] Fail to connect to @%s', channelId);
+    }
 
     // On message
     twitchChat.on('chat', async (channel, user, message, self) => {
