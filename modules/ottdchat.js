@@ -4,7 +4,7 @@ var exports = module.exports = {};
  * requires
  */
 const fs = require('fs');
-const ottd = require('node-openttd-admin');
+const ottd = require('node-openttd-admin-class');
 const lib = require(__dirname + '/../lib/lib.js');
 
 // const auth = require('../config/auth.js');
