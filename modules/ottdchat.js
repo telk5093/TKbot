@@ -37,7 +37,7 @@ exports.init = (data) => {
     let _oc = ottdClients[data.uid];
 
     // Connect to OpenTTD server
-    if (/* isMod &&  */lib.isMatch(message, ['!ottd connect', '!ottd start', '!트타 시작', '!오픈트타 시작', '!트타 연결', '!오픈트타 연결'])) {
+    if (isMod && lib.isMatch(message, ['!ottd connect', '!ottd start', '!트타 시작', '!오픈트타 시작', '!트타 연결', '!오픈트타 연결'])) {
         if (_oc.connected) {
             console.log('[ottdchat.js] @' + data.uid + ' Already connected');
             return;
@@ -158,7 +158,7 @@ exports.init = (data) => {
         }
 
     // Disconnect
-    } else if (/* isMod &&  */lib.isMatch(message, ['!ottd disconnect', '!ottd stop', '!ottd end', '!트타 중지', '!오픈트타 중지', '!트타 해제', '!오픈트타 해제'])) {
+    } else if (isMod && lib.isMatch(message, ['!ottd disconnect', '!ottd stop', '!ottd end', '!트타 중지', '!오픈트타 중지', '!트타 해제', '!오픈트타 해제'])) {
         if (!_oc || !_oc.connected) {
             return;
         }
