@@ -115,3 +115,10 @@ table .head {
     text-align: center;
     background-color: #eeeeee;
 }
+
+form.login {
+    margin: 30px;
+}
+form.login input {
+    margin-bottom: 5px;
+}

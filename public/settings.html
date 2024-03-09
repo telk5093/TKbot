@@ -59,6 +59,30 @@
             </tbody>
         </table>
         <br />
+
+        <h4>OpenTTD 채팅 연동</h4>
+        <table>
+            <thead>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="head">서버 주소</td>
+                    <td class="body" colspan="2"><input type="text" name="openttd.host" placeholder="OpenTTD 서버 주소를 입력하세요 (eg. ottd.example.com)" value="{@data:openttd.host}" /></td>
+                </tr>
+                <tr>
+                    <td class="head">Admin Port</td>
+                    <td class="body" colspan="2"><input type="text" name="openttd.port" placeholder="OpenTTD 서버 Admin Port(server_admin_port) 값을 입력하세요.  (eg. 3977)" value="{@data:openttd.port}" /></td>
+                </tr>
+                <tr>
+                    <td class="head">Admin Port 비밀번호</td>
+                    <td class="body" colspan="2">
+                        <input type="password" name="openttd.password" placeholder="OpenTTD 서버 Admin Port Password를 입력하세요" value="{@data:openttd.password}" />
+                        <br />* Admin Port Password 에 본인이 자주 사용하는 비밀번호를 설정하지 마세요.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br />
         
         <button type="submit">저장</button>
         <button type="button" onclick="location.href='/';">뒤로</button>

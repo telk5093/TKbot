@@ -282,6 +282,9 @@ router.get('/settings', (req, res) => {
         'dccon.baseUrl': channelConfig.chat.dccon.baseUrl,
         'dccon.js': channelConfig.chat.dccon.js,
         'dccon.image': channelConfig.chat.dccon.image,
+        'openttd.host': channelConfig.openttd.host,
+        'openttd.port': channelConfig.openttd.port,
+        'openttd.password': channelConfig.openttd.password,
     });
     doc.print(req, res);
 });
@@ -297,15 +300,21 @@ router.post('/settings', (req, res) => {
         // Load channel's config
         let channelConfig = lib.loadChannelConfig(channelUid);
 
-        // Change
+        // Channel IDs
         channelConfig.channels.chzzk = req.body.chzzk ?? null;
         channelConfig.channels.youtube = req.body.youtube ?? null;
         channelConfig.channels.twitch = req.body.twitch ?? null;
         // channelConfig.channels.kick = req.body.kick ?? null;
 
+        // Dccon
         channelConfig.chat.dccon.baseUrl = req.body['dccon.baseUrl'] ?? null;
         channelConfig.chat.dccon.js = req.body['dccon.js'] ?? null;
         channelConfig.chat.dccon.image = req.body['dccon.image'] ?? null;
+
+        // OpenTTD
+        channelConfig.openttd.host = req.body['openttd.host'] ?? null;
+        channelConfig.openttd.port = req.body['openttd.port'] ?? null;
+        channelConfig.openttd.password = req.body['openttd.password'] ?? null;
 
         // Save channel's config
         lib.saveChannelConfig(channelUid, channelConfig);
