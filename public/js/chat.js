@@ -21,10 +21,6 @@ $(document).ready(async function() {
 
     // on message
     socket.on('data', function (data) {
-        if (data.message.substring(0, 1) === '!') {
-            return;
-        }
-        console.log(data);
         addMessage(data);
     });
 
@@ -79,7 +75,8 @@ var numChat = 0;
 const numChatMax = 20;
 const fadeoutTime = 60;
 function addMessage(data) {
-    let chatWrap = $('#chatWrap');
+    const chatWrap = $('#chatWrap');
+    console.log(data);
 
     let message = data.message.replace(/</ig, '&lt;');
 
@@ -88,6 +85,19 @@ function addMessage(data) {
         let first = chatWrap.find('.chat').eq(0);
         first.remove();
         numChat--;
+    }
+
+    // 채팅 테마 변경
+    if (message.startsWith('!theme ') || message.startsWith('!테마 ')) {
+        let chatTheme = String(message).replace(/^!(theme|테마) /ig, '').replace(/[^0-9a-zA-Z\-_\.]/ig, '');
+        console.log(chatTheme);
+        $('head link.theme').attr('href', './css/chat/' + chatTheme + '.css');
+        return;
+    }
+
+    // 그 외 느낌표(!)로 시작하는 명령어 무시
+    if (data.message.substring(0, 1) === '!') {
+        return;
     }
 
     // OpenTTD 채팅 치환
