@@ -84,26 +84,31 @@ input[type="search"] {
     width: 430px;
     outline: none;
 }
-button {
+button,
+.button {
     border: 1px solid #aaaaaa;
     background-color: #eeeeee;
     padding: 5px 20px;
+    text-decoration: none;
+    color: inherit;
     cursor: pointer;
     outline: none;
 }
-button:hover {
+button:hover,
+.button:hover {
     background-color: #dddddd;
 }
-button:active {
+button:active,
+.button:active {
     background-color: #cccccc;
 }
-button.xxsmall { padding: 1px 3px; font-size: 10px; }
-button.xsmall { padding: 2px 5px; font-size: 11px; }
-button.small { padding: 3px 10px; font-size: 12px; }
-button.medium { padding: 3px 15px; font-size: 14px; }
-button.large { padding: 5px 20px; font-size: 16px; }
-button.xlarge { padding: 10px 25px; font-size: 18px; }
-button.xxlarge { padding: 10px 30px; font-size: 20px; }
+button.xxsmall, .button.xxsmall { padding: 1px 3px; font-size: 10px; }
+button.xsmall, .button.xsmall   { padding: 2px 5px; font-size: 11px; }
+button.small, .button.small     { padding: 3px 10px; font-size: 12px; }
+button.medium, .button.medium   { padding: 3px 15px; font-size: 14px; }
+button.large, .button.large     { padding: 5px 20px; font-size: 16px; }
+button.xlarge, .button.xlarge   { padding: 10px 25px; font-size: 18px; }
+button.xxlarge, .button.xxlarge { padding: 10px 30px; font-size: 20px; }
 table {
     border-collapse: collapse;
 }
