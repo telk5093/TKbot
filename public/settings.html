@@ -1,17 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>TKbot - Join</title>
-    <link rel="stylesheet" type="text/css" href="./css/common.css" />
-</head>
+    <form name="frm" method="post" action="/settings" onsubmit="return confirmSettings();">
+        <h4>계정 정보</h4>
+        <table>
+            <colgroup>
+                <col width="200" />
+                <col width="500" />
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td class="head">비밀번호 변경</td>
+                    <td class="body"><input type="password" name="password" placeholder="비밀번호 변경을 원할 경우 입력하세요" value="" /></td>
+                </tr>
+                <tr>
+                    <td class="head">비밀번호 변경 확인</td>
+                    <td class="body"><input type="password" name="password" placeholder="비밀번호 변경을 원할 경우 다시 한 번 입력하세요" value="" /></td>
+                </tr>
+            </tbody>
+        </table>
+        <ul>
+            <li>평소 사용하고 있는 비밀번호를 사용하지 않도록 주의해주세요.</li>
+        </ul>
+        <br />
 
-<body>
-    <form name="frm" method="post" action="/settings">
         <h4>채널 입장/퇴장</h4>
         <table>
-            <thead>
-            </thead>
+            <colgroup>
+                <col width="200" />
+                <col width="500" />
+            </colgroup>
             <tbody>
                 <tr>
                     <td class="head">치지직</td>
@@ -36,34 +51,41 @@
             </tbody>
         </table>
         <br />
+        <br />
 
         <h4>디씨콘</h4>
         <table>
-            <thead>
-            </thead>
+            <colgroup>
+                <col width="200" />
+                <col width="500" />
+                <col width="100" />
+            </colgroup>
             <tbody>
                 <tr>
                     <td class="head">기본 URL</td>
-                    <td class="body" colspan="2"><input type="text" name="dccon.baseUrl" placeholder="디씨콘 기본 URL을 입력하세요 (eg. https://example.com)" value="{@data:dccon.baseUrl}" /></td>
+                    <td class="body"><input type="text" name="dccon.baseUrl" placeholder="디씨콘 기본 URL을 입력하세요 (eg. https://example.com)" value="{@data:dccon.baseUrl}" /></td>
                 </tr>
                 <tr>
                     <td class="head">JS파일 경로</td>
                     <td class="body"><input type="text" name="dccon.js" placeholder="디씨콘 JS 파일 경로를 입력하세요 (eg. /js/dccon_list.js)" value="{@data:dccon.js}" /></td>
-                    <td class="body"><button type="button" class="small" onclick="void(window.open('{@data:dccon.baseUrl}{@data:dccon.js}'));">확인</button></td>
                 </tr>
                 <tr>
                     <td class="head">이미지 파일 경로</td>
                     <td class="body"><input type="text" name="dccon.image" placeholder="디씨콘 이미지 파일 경로를 입력하세요 (eg. /images/)" value="{@data:dccon.image}" /></td>
-                    <td class="body"><button type="button" class="small" onclick="void(window.open('{@data:dccon.baseUrl}{@data:dccon.image}test.png'));">확인</button></td>
                 </tr>
             </tbody>
         </table>
         <br />
+        <button type="button" class="small" onclick="checkDccon('{@data:dccon.baseUrl}', '{@data:dccon.js}', '{@data:dccon.image}');">디씨콘 정상 적용 여부 확인</button> <span id="dcconImage"></span>
+        <br />
+        <br />
 
         <h4>OpenTTD 채팅 연동</h4>
         <table>
-            <thead>
-            </thead>
+            <colgroup>
+                <col width="200" />
+                <col width="500" />
+            </colgroup>
             <tbody>
                 <tr>
                     <td class="head">서버 주소</td>
@@ -71,21 +93,27 @@
                 </tr>
                 <tr>
                     <td class="head">Admin Port</td>
-                    <td class="body" colspan="2"><input type="text" name="openttd.port" placeholder="OpenTTD 서버 Admin Port(server_admin_port) 값을 입력하세요.  (eg. 3977)" value="{@data:openttd.port}" /></td>
+                    <td class="body" colspan="2">
+                        <input type="text" name="openttd.port" placeholder="OpenTTD 서버 Admin Port(server_admin_port) 값을 입력하세요.  (eg. 3977)" value="{@data:openttd.port}" />
+                        <ul>
+                            <li>OpenTTD의 <code>openttd.cfg</code> 파일을 연 뒤, <code>server_admin_port</code> 값을 입력해주세요.</li>
+                        </ul>
+                    </td>
                 </tr>
                 <tr>
                     <td class="head">Admin Port 비밀번호</td>
                     <td class="body" colspan="2">
                         <input type="password" name="openttd.password" placeholder="OpenTTD 서버 Admin Port Password를 입력하세요" value="{@data:openttd.password}" />
-                        <br />* Admin Port Password 에 본인이 자주 사용하는 비밀번호를 설정하지 마세요.
+                        <ul>
+                            <li>Admin Port Password에 평소 사용하고 있는 비밀번호를 사용하지 않도록 주의해주세요. OpenTTD의 <code>secrets.cfg</code> 파일을 연 뒤, <code>admin_password</code> 값을 입력해주세요.</li>
+                        </ul>
                     </td>
                 </tr>
             </tbody>
         </table>
         <br />
-        
+        <br />
+
         <button type="submit">저장</button>
         <button type="button" onclick="location.href='/';">뒤로</button>
     </form>
-</body>
-</html>

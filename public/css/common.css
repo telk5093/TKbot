@@ -8,6 +8,9 @@
     font-size: 14px;
 }
 
+body.blank {
+    margin: 30px;
+}
 
 header {
     display: flex;
@@ -49,6 +52,9 @@ header nav ul li a:hover {
 #content {
     padding: 10px 30px;
 }
+#content ul {
+    margin-left: 20px;
+}
 
 h1 {
     margin-bottom: 10px;
@@ -73,6 +79,12 @@ h5 {
 h6 {
     margin-bottom: 10px;
     font-size: 18px;
+}
+code {
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-family: monospace;
+    background-color: #eeeeee;
 }
 input[type="text"],
 input[type="password"],
@@ -111,6 +123,7 @@ button.xlarge, .button.xlarge   { padding: 10px 25px; font-size: 18px; }
 button.xxlarge, .button.xxlarge { padding: 10px 30px; font-size: 20px; }
 table {
     border-collapse: collapse;
+    margin-bottom: 5px;
 }
 table th,
 table td {
@@ -123,9 +136,10 @@ table .head {
     background-color: #eeeeee;
 }
 
-form.login {
-    margin: 30px;
-}
-form.login input {
+form input {
     margin-bottom: 5px;
+}
+#dcconImage {
+    display: inline-block;
+    margin-left: 10px;
 }

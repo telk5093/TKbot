@@ -27,9 +27,10 @@ router.post('/', (req, res) => {
     let channelConfig = lib.loadChannelConfig(channelUid);
     if (!channelConfig) {
         let doc = new Doc();
-        doc.setView('error');
-        doc.setContent('[E01] Invalid userid <a href="/">Back</a>');
-        doc.print(req, res, 'blank');
+        doc.alert(req, res, '로그인 정보를 확인해주세요.', function() {
+            history.go(-1);
+        });
+        return;
     } else {
         if (channelConfig.password == password) {
             if (req.body.save_channelUid > 0) {
@@ -41,9 +42,10 @@ router.post('/', (req, res) => {
             });
         } else {
             let doc = new Doc();
-            doc.setView('error');
-            doc.setContent('[E02] Invalid userid <a href="/">Back</a>');
-            doc.print(req, res, 'blank');
+            doc.alert(req, res, '로그인 정보를 확인해주세요.', function() {
+                history.go(-1);
+            });
+            return;
         }
     }
 });

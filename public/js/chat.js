@@ -90,7 +90,6 @@ function addMessage(data) {
     // 채팅 테마 변경
     if (message.startsWith('!theme ') || message.startsWith('!테마 ')) {
         let chatTheme = String(message).replace(/^!(theme|테마) /ig, '').replace(/[^0-9a-zA-Z\-_\.]/ig, '');
-        console.log(chatTheme);
         $('head link.theme').attr('href', './css/chat/' + chatTheme + '.css');
         return;
     }
