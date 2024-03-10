@@ -90,8 +90,8 @@ var connect = exports.connect = async (channelUid, channelId) => {
     });
 
     // Reconnect
-    chzzkChat.on('reconnect', chatChannelId => {
-        console.log('Reconnected to ' + chatChannelId);
+    chzzkChat.on('reconnect', newChatChannelId => {
+        console.log('Reconnected to ' + newChatChannelId);
     });
 
     // Blind
@@ -197,7 +197,31 @@ var connect = exports.connect = async (channelUid, channelId) => {
             'client': client,
         });
     });
+/*
+    // 후원 채팅
+    chzzkChat.on('donation', donation => {
+        console.log(`\n>> ${donation.profile?.nickname ?? "익명의 후원자"} 님이 ${donation.extras.payAmount}원 후원`)
+        if (donation.message) {
+            console.log(`>> ${donation.message}`);
+        }
+    });
 
+    // 구독
+    chzzkChat.on('subscription', subscription => {
+        console.log(`${subscription.profile.nickname} 님이 ${subscription.extras.month} 개월 동안 ${subscription.extras.tierName} 구독중`);
+    });
+
+    // 시스템 메시지 (채팅 제한, 활동 제한, 운영자 임명 등)
+    chzzkChat.on('systemMessage', systemMessage => {
+        console.log(systemMessage.extras.description);
+    });
+
+    // 고정 메시지
+    chzzkChat.on('notice', notice => {
+        // 고정 해제 시 null
+        console.log(notice);
+    });
+*/
     // Connect
     try {
         await chzzkChat.connect();
