@@ -8,11 +8,15 @@
             <tbody>
                 <tr>
                     <td class="head">비밀번호 변경</td>
-                    <td class="body"><input type="password" name="password" placeholder="비밀번호 변경을 원할 경우 입력하세요" value="" /></td>
+                    <td class="body">
+                        <input type="password" name="password" placeholder="비밀번호 변경을 원할 경우 입력하세요" value="" />
+                    </td>
                 </tr>
                 <tr>
                     <td class="head">비밀번호 변경 확인</td>
-                    <td class="body"><input type="password" name="password" placeholder="비밀번호 변경을 원할 경우 다시 한 번 입력하세요" value="" /></td>
+                    <td class="body">
+                        <input type="password" name="password" placeholder="비밀번호 변경을 원할 경우 다시 한 번 입력하세요" value="" />
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -30,18 +34,30 @@
             <tbody>
                 <tr>
                     <td class="head">치지직</td>
-                    <td class="body"><input type="text" name="chzzk" placeholder="치지직 uid를 입력하세요 (eg. c6f75be90a32cac61524e91db7648f98)" value="{@data:chzzk}" /></td>
-                    <td class="body"><button type="button" class="small join">입장</button> <button type="button" class="small quit">퇴장</button></td>
+                    <td class="body">
+                        <input type="text" name="chzzk" placeholder="치지직 uid를 입력하세요 (eg. c6f75be90a32cac61524e91db7648f98)" value="{@data:chzzk}" />
+                    </td>
+                    <td class="body">
+                        <button type="button" class="small join">입장</button> <button type="button" class="small quit">퇴장</button>
+                    </td>
                 </tr>
                 <tr>
                     <td class="head">YouTube</td>
-                    <td class="body"><input type="text" name="youtube" placeholder="YouTube id를 입력하세요 (eg. UC0NExSLd9TFBcEX0ye8I1dw)" value="{@data:youtube}" /></td>
-                    <td class="body"><button type="button" class="small join">입장</button> <button type="button" class="small quit">퇴장</button></td>
+                    <td class="body">
+                        <input type="text" name="youtube" placeholder="YouTube id를 입력하세요 (eg. UC0NExSLd9TFBcEX0ye8I1dw)" value="{@data:youtube}" />
+                    </td>
+                    <td class="body">
+                        <button type="button" class="small join">입장</button> <button type="button" class="small quit">퇴장</button>
+                    </td>
                 </tr>
                 <tr>
                     <td class="head">Twitch</td>
-                    <td class="body"><input type="text" name="twitch" placeholder="twitch id를 입력하세요 (eg. telk5093)" value="{@data:twitch}" /></td>
-                    <td class="body"><button type="button" class="small join">입장</button> <button type="button" class="small quit">퇴장</button></td>
+                    <td class="body">
+                        <input type="text" name="twitch" placeholder="twitch id를 입력하세요 (eg. telk5093)" value="{@data:twitch}" />
+                    </td>
+                    <td class="body">
+                        <button type="button" class="small join">입장</button> <button type="button" class="small quit">퇴장</button>
+                    </td>
                 </tr>
                 <!-- <tr>
                     <td class="head">Kick</td>
@@ -50,6 +66,39 @@
                 </tr> -->
             </tbody>
         </table>
+        <br />
+        <br />
+
+        <h4>TTS(Text-To-Speech) 설정</h4>
+        <table>
+            <colgroup>
+                <col width="200" />
+                <col width="500" />
+            </colgroup>
+            <tbody>
+                <!-- <tr>
+                    <td class="head">사용 설정</td>
+                    <td class="body">
+                        <label><input type="checkbox" name="tts.enabled" value="1" checked disabled /> TTS 사용 (TTS 사용을 끄려면 TTS 창을 열지 않으면 됩니다)</label>
+                    </td>
+                </tr> -->
+                <tr>
+                    <td class="head">금지 단어</td>
+                    <td class="body">
+                        <textarea name="tts.banword" placeholder="(TTS로 읽어주지 않을 단어를 한 줄에 하나씩 입력하세요)">{@data:tts.banword}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="head">금지 유저</td>
+                    <td class="body">
+                        <textarea name="tts.banuser" placeholder="(TTS로 읽어주지 않을 유저를 한 줄에 하나씩 입력하세요)">{@data:tts.banuser}</textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <ul>
+            <li><a href="/tts#{@session:channelUid}" target="_blank">TTS 창</a>을 열어뒀을 때에만 TTS를 사용합니다.</li>
+        </ul>
         <br />
         <br />
 
@@ -63,15 +112,21 @@
             <tbody>
                 <tr>
                     <td class="head">기본 URL</td>
-                    <td class="body"><input type="text" name="dccon.baseUrl" placeholder="디씨콘 기본 URL을 입력하세요 (eg. https://example.com)" value="{@data:dccon.baseUrl}" /></td>
+                    <td class="body">
+                        <input type="text" name="dccon.baseUrl" placeholder="디씨콘 기본 URL을 입력하세요 (eg. https://example.com)" value="{@data:dccon.baseUrl}" />
+                    </td>
                 </tr>
                 <tr>
                     <td class="head">JS파일 경로</td>
-                    <td class="body"><input type="text" name="dccon.js" placeholder="디씨콘 JS 파일 경로를 입력하세요 (eg. /js/dccon_list.js)" value="{@data:dccon.js}" /></td>
+                    <td class="body">
+                        <input type="text" name="dccon.js" placeholder="디씨콘 JS 파일 경로를 입력하세요 (eg. /js/dccon_list.js)" value="{@data:dccon.js}" />
+                    </td>
                 </tr>
                 <tr>
                     <td class="head">이미지 파일 경로</td>
-                    <td class="body"><input type="text" name="dccon.image" placeholder="디씨콘 이미지 파일 경로를 입력하세요 (eg. /images/)" value="{@data:dccon.image}" /></td>
+                    <td class="body">
+                        <input type="text" name="dccon.image" placeholder="디씨콘 이미지 파일 경로를 입력하세요 (eg. /images/)" value="{@data:dccon.image}" />
+                    </td>
                 </tr>
             </tbody>
         </table>

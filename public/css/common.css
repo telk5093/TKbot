@@ -89,12 +89,18 @@ code {
 input[type="text"],
 input[type="password"],
 input[type="number"],
-input[type="search"] {
+input[type="search"],
+textarea {
     border: 1px solid #aaaaaa;
     padding: 3px 15px;
     border-radius: 5px;
-    width: 430px;
+    width: 100%;
+    max-width: 450px;
     outline: none;
+}
+textarea {
+    min-height: 60px;
+    resize: vertical;
 }
 button,
 .button {

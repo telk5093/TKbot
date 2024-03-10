@@ -17,22 +17,35 @@ router.get('/settings', (req, res) => {
         return;
     }
 
+    // Prepare data
+    let data = {
+        'chzzk': channelConfig.channels?.chzzk,
+        'youtube': channelConfig.channels?.youtube,
+        'twitch': channelConfig.channels?.twitch,
+        // 'kick': channelConfig.channels?.kick,
+
+        'dccon.baseUrl': channelConfig.chat?.dccon?.baseUrl,
+        'dccon.js': channelConfig.chat?.dccon?.js,
+        'dccon.image': channelConfig.chat?.dccon?.image,
+
+        'openttd.host': channelConfig.openttd?.host,
+        'openttd.port': channelConfig.openttd?.port,
+        'openttd.password': channelConfig.openttd?.password,
+
+        'tts.enabled': true,   // channelConfig.tts.enabled > 0 ? true : false,
+        'tts.banword': channelConfig.tts.banword.join('\n'),
+        'tts.banuser': channelConfig.tts.banuser.join('\n'),
+    };
+    let dataProcessed = {};
+    for (let _key in data) {
+        dataProcessed[_key] = lib.htmlspecialchars(data[_key]) ?? ''
+    }
+
     let doc = new Doc();
     doc.setTitle('Settings');
     doc.setView('settings');
     doc.prepareJS('settings.js');
-    doc.replace({
-        'chzzk': channelConfig.channels?.chzzk ?? '',
-        'youtube': channelConfig.channels?.youtube ?? '',
-        'twitch': channelConfig.channels?.twitch ?? '',
-        // 'kick': channelConfig.channels?.kick ?? '',
-        'dccon.baseUrl': channelConfig.chat?.dccon?.baseUrl ?? '',
-        'dccon.js': channelConfig.chat?.dccon?.js ?? '',
-        'dccon.image': channelConfig.chat?.dccon?.image ?? '',
-        'openttd.host': channelConfig.openttd?.host ?? '',
-        'openttd.port': channelConfig.openttd?.port ?? '',
-        'openttd.password': channelConfig.openttd?.password ?? '',
-    });
+    doc.replace(dataProcessed);
     doc.print(req, res);
 });
 router.post('/settings', (req, res) => {
@@ -74,6 +87,14 @@ router.post('/settings', (req, res) => {
         channelConfig.openttd.host = req.body['openttd.host'] ?? null;
         channelConfig.openttd.port = req.body['openttd.port'] ?? null;
         channelConfig.openttd.password = req.body['openttd.password'] ?? null;
+
+        // TTS
+        if (channelConfig.tts) {
+            channelConfig.tts = {};
+        }
+        channelConfig.tts.enabled = true;
+        channelConfig.tts.banword = req.body['tts.banword'].split('\n').filter(x => x).map(x => { return x.trim(); }) ?? [];
+        channelConfig.tts.banuser = req.body['tts.banuser'].split('\n').filter(x => x).map(x => { return x.trim(); }) ?? [];
 
         // Save channel's config
         lib.saveChannelConfig(channelUid, channelConfig);
