@@ -65,7 +65,8 @@ router.post('/settings', (req, res) => {
             throw '비밀번호 변경과 비밀번호 변경 확인 란이 일치하지 않습니다';
         }
         if (req.body.password && req.body.password2 && req.body.password == req.body.password2) {
-            channelConfig.password = req.body.password;
+            let new_password = crypto.createHash('sha256').update('tkbot_' + req.body.password + '_bot312!').digest('hex');
+            channelConfig.password = new_password;
         }
 
         // Channel IDs
