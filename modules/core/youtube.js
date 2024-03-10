@@ -22,7 +22,7 @@ var youtubeLiveId = null;
  */
 var init = exports.init = (data) => {
     for (let _channelUid in channelsConfig) {
-        let _channelId = channelsConfig[_channelUid].channels.youtube;
+        let _channelId = channelsConfig[_channelUid].channels?.youtube;
         if (!_channelId) {
             continue;
         }

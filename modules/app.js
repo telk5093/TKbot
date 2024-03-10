@@ -275,16 +275,16 @@ router.get('/settings', (req, res) => {
     doc.setView('settings');
     doc.prepareJS('settings.js');
     doc.replace({
-        'chzzk': channelConfig.channels.chzzk ?? '',
-        'youtube': channelConfig.channels.youtube ?? '',
-        'twitch': channelConfig.channels.twitch ?? '',
-        // 'kick': channelConfig.channels.kick ?? '',
-        'dccon.baseUrl': channelConfig.chat.dccon.baseUrl,
-        'dccon.js': channelConfig.chat.dccon.js,
-        'dccon.image': channelConfig.chat.dccon.image,
-        'openttd.host': channelConfig.openttd.host,
-        'openttd.port': channelConfig.openttd.port,
-        'openttd.password': channelConfig.openttd.password,
+        'chzzk': channelConfig.channels?.chzzk ?? '',
+        'youtube': channelConfig.channels?.youtube ?? '',
+        'twitch': channelConfig.channels?.twitch ?? '',
+        // 'kick': channelConfig.channels?.kick ?? '',
+        'dccon.baseUrl': channelConfig.chat?.dccon?.baseUrl ?? '',
+        'dccon.js': channelConfig.chat?.dccon?.js ?? '',
+        'dccon.image': channelConfig.chat?.dccon?.image ?? '',
+        'openttd.host': channelConfig.openttd?.host ?? '',
+        'openttd.port': channelConfig.openttd?.port ?? '',
+        'openttd.password': channelConfig.openttd?.password ?? '',
     });
     doc.print(req, res);
 });
@@ -301,17 +301,29 @@ router.post('/settings', (req, res) => {
         let channelConfig = lib.loadChannelConfig(channelUid);
 
         // Channel IDs
+        if (!channelConfig.channels) {
+            channelConfig.channels = {};
+        }
         channelConfig.channels.chzzk = req.body.chzzk ?? null;
         channelConfig.channels.youtube = req.body.youtube ?? null;
         channelConfig.channels.twitch = req.body.twitch ?? null;
         // channelConfig.channels.kick = req.body.kick ?? null;
 
         // Dccon
+        if (!channelConfig.chat) {
+            channelConfig.chat = {};
+        }
+        if (!channelConfig.chat.dccon) {
+            channelConfig.chat.dccon = {};
+        }
         channelConfig.chat.dccon.baseUrl = req.body['dccon.baseUrl'] ?? null;
         channelConfig.chat.dccon.js = req.body['dccon.js'] ?? null;
         channelConfig.chat.dccon.image = req.body['dccon.image'] ?? null;
 
         // OpenTTD
+        if (!channelConfig.openttd) {
+            channelConfig.openttd = {};
+        }
         channelConfig.openttd.host = req.body['openttd.host'] ?? null;
         channelConfig.openttd.port = req.body['openttd.port'] ?? null;
         channelConfig.openttd.password = req.body['openttd.password'] ?? null;

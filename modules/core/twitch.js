@@ -20,7 +20,7 @@ var twitchClients = [];
  */
 exports.init = async () => {
     for (let _channelUid in channelsConfig) {
-        let _channelId = channelsConfig[_channelUid].channels.twitch;
+        let _channelId = channelsConfig[_channelUid].channels?.twitch;
         if (!_channelId) {
             continue;
         }

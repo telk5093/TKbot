@@ -20,7 +20,7 @@ var chzzkClients = [];
  */
 var init = exports.init = async () => {
     for (let _channelUid in channelsConfig) {
-        let _channelId = channelsConfig[_channelUid].channels.chzzk;
+        let _channelId = channelsConfig[_channelUid].channels?.chzzk;
         if (!_channelId) {
             continue;
         }
