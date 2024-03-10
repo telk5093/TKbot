@@ -54,11 +54,19 @@ router.post('/settings', (req, res) => {
 
     try {
         if (!channelUid) {
-            throw 'Please login';
+            throw '로그인해주세요';
         }
 
         // Load channel's config
         let channelConfig = lib.loadChannelConfig(channelUid);
+
+        // Password
+        if (req.body.password != req.body.password2) {
+            throw '비밀번호 변경과 비밀번호 변경 확인 란이 일치하지 않습니다';
+        }
+        if (req.body.password && req.body.password2 && req.body.password == req.body.password2) {
+            channelConfig.password = req.body.password;
+        }
 
         // Channel IDs
         if (!channelConfig.channels) {
@@ -103,9 +111,10 @@ router.post('/settings', (req, res) => {
 
     } catch (e) {
         let doc = new Doc();
-        doc.setView('error');
-        doc.setContent(e + ' <a href="/">Back</a>');
-        doc.print(req, res, 'blank');
+        doc.alert(req, res, e, function() {
+            history.go(-1);
+        });
+        return;
     }
     res.end(JSON.stringify(output));
 });
