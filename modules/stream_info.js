@@ -27,6 +27,7 @@ let params = {
 var init = exports.init = async (data) => {
     let t = -1;
     let message = data.message;
+    let liveDetail = null;
 
     // Get stream title
     if (t = lib.startWithCmd(message, ['!방제', '!title', '!샤싣', '!타이틀'])) {
@@ -35,26 +36,40 @@ var init = exports.init = async (data) => {
             return;
         }
 
-        const liveDetail = await data.callback.client.live.detail(data.to);
+        // Get stream information
+        let liveSetting = await data.callback.client.manage.setting(data.to);
 
         // Change stream title
         if (data.isMod && t.param !== null) {
-            let liveSetting = await data.callback.client.live.setting(data.to);
             let streamTitle = String(t.param).trim();
 
             if (!streamTitle) {
                 lib.say(data, '사용 방법: !title <방제>');
                 return;
             } else {
-                liveSetting.defaultLiveTitle = streamTitle;
-                await data.callback.client.live.setting(data.to, liveSetting);
+                // Change game
+                let new_liveSetting = {
+                    // Change
+                    defaultLiveTitle: streamTitle,
+
+                    // Live as is
+                    categoryType: liveSetting.category.categoryType,
+                    liveCategory: liveSetting.category.liveCategory,
+                    adult: liveSetting.adult,
+                    chatActive: liveSetting.chatActive,
+                    chatAvailableGroup: liveSetting.chatAvailableGroup,
+                    chatAvailableCondition: liveSetting.chatAvailableCondition,
+                    defaultThumbnailImageUrl: liveSetting.defaultThumbnailImageUrl,
+                    paidPromotion: liveSetting.paidPromotion,
+                }
+                await data.callback.client.manage.setting(data.to, new_liveSetting);
                 lib.say(data, '방송 제목이 "' + streamTitle + '"(으)로 변경되었습니다.');
                 return;
             }
         }
 
-        if (liveDetail && liveDetail.liveTitle) {
-            lib.say(data, '@' + data.username + ' 현재 방제: ' + liveDetail.liveTitle);
+        if (liveSetting && liveSetting.defaultLiveTitle) {
+            lib.say(data, '@' + data.username + ' 현재 방제: ' + liveSetting.defaultLiveTitle);
         }
 
     // Get game
@@ -64,15 +79,15 @@ var init = exports.init = async (data) => {
             return;
         }
 
-        const liveDetail = await data.callback.client.live.detail(data.to);
+        // Get stream information
+        let liveSetting = await data.callback.client.manage.setting(data.to);
         let gameType = null;
         let gameTitle = null;
 
-        switch (liveDetail.categoryType) {
+        switch (liveSetting.category.categoryType) {
             case 'GAME':
                 gameType = '게임';
-                // gameTitle = liveSetting.category.liveCategoryName;
-                gameTitle = liveDetail.liveCategoryValue;
+                gameTitle = liveSetting.category.liveCategoryName;
                 break;
             case 'ETC':
             default:
@@ -83,7 +98,6 @@ var init = exports.init = async (data) => {
 
         // Change game
         if (data.isMod && t.param !== null) {
-            let liveSetting = await data.callback.client.live.setting(data.to);
             let gameTitle = String(t.param).trim();
 
             if (!gameTitle) {
@@ -112,11 +126,21 @@ var init = exports.init = async (data) => {
                 }
 
                 // Change game
-                re_liveSetting = liveSetting;
-                re_liveSetting.categoryType = categoryType;
-                re_liveSetting.liveCategory = category;
-                re_liveSetting.liveCategoryName = categoryName;
-                await data.callback.client.live.setting(data.to, re_liveSetting);
+                let new_liveSetting = {
+                    // Change
+                    categoryType: categoryType,
+                    liveCategory: category,
+
+                    // Live as is
+                    adult: liveSetting.adult,
+                    chatActive: liveSetting.chatActive,
+                    chatAvailableGroup: liveSetting.chatAvailableGroup,
+                    chatAvailableCondition: liveSetting.chatAvailableCondition,
+                    defaultLiveTitle: liveSetting.defaultLiveTitle,
+                    defaultThumbnailImageUrl: liveSetting.defaultThumbnailImageUrl,
+                    paidPromotion: liveSetting.paidPromotion,
+                }
+                await data.callback.client.manage.setting(data.to, new_liveSetting);
                 lib.say(data, '방송 주제가 "' + categoryName + '"(으)로 변경되었습니다.');
                 return;
             }
@@ -132,12 +156,8 @@ var init = exports.init = async (data) => {
 
         // From chzzk
         if (channelConfig.channels.chzzk) {
-            let res = await axios({
-                url: 'https://api.chzzk.naver.com/service/v2/channels/' + channelConfig.channels.chzzk + '/live-detail',
-                type: 'GET',
-            });
-            let liveDetail = res.data.content;
-            // const liveDetail = await data.callback.client.live.detail(data.to);
+            // Get stream information
+            let liveDetail = await data.callback.client.live.detail(data.to);
 
             let n = new Date();
             let m = new Date(liveDetail.openDate);
