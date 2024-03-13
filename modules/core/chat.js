@@ -92,6 +92,7 @@ var send = exports.send = (data) => {
             'message': data.message,
             'emotes': data.emotes,
             'time': data.time,
+            'isMod': data.isMod,
         });
     }
 
