@@ -1,0 +1,58 @@
+@import url(/css/chat/common.css);
+
+#chatWrap .chat {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+
+    margin-bottom: 10px;
+	border: 0;
+	padding: 0;
+	background-color: transparent;
+}
+#chatWrap .chat:last-child {
+    margin-bottom: 0;
+}
+
+#chatWrap .chat .header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+	box-sizing: border-box;
+	width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #41bdf3;
+    text-shadow: 1px 1px 0 #000;
+
+}
+#chatWrap .chat .platform {
+    display: none;
+    width: 16px;
+    height: 16px;
+    text-indent: -99999em;
+}
+#chatWrap .chat .message {
+	box-sizing: border-box;
+    width: 100%;
+    border-radius: 7px;
+    max-height: 260px;
+    padding: 10px;
+    font-size: 14px;
+    white-space: pre-line;
+    word-break: break-word;
+    color: #000000;
+    background: linear-gradient(#fcffff, #d4d8db);
+}
+#chatWrap .chat .message del {
+    color: #888888;
+    font-style: italic;
+}
+#chatWrap .chat .message .emote {
+    width: 2em;
+    vertical-align: middle;
+}
+
