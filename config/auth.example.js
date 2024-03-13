@@ -9,21 +9,19 @@ var exports = module.exports = {
 
         // YouTube
         youtube: {
-            // @TKbot
             id: '(YouTube Bot Uid)',
         },
 
         // Twitch
         twitch: {
-            // TELKbot
             id: '(Twitch Bot ID)',
             password: '(Twitch Bot oauth:password))',
         },
 
-        // kick
-        kick: {
-            id: '(Kick Bot ID)',
-        },
+        // // kick
+        // kick: {
+        //     id: '(Kick Bot ID)',
+        // },
     },
 
     api: {
