@@ -177,6 +177,11 @@ router.get('/chat', (req, res) => {
     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
     res.end(contents);
 });
+router.get('/chat-test', (req, res) => {
+    let contents = String(fs.readFileSync(__dirname + '/../public/chat-test.html'));
+    res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+    res.end(contents);
+});
 
 
 /**

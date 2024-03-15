@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <title>TKbot - Chat</title>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/js/chat.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="./css/chat/default.css" />
+    <link rel="stylesheet" type="text/css" href="" class="theme" />
+    <style type="text/css">
+    body {
+        background-color: #000000;
+    }
+    </style>
+</head>
+
+<body>
+	<div id="background"></div>
+
+    <div id="chatWrap">
+        <div class="chat" data-userid="System" data-time="0">
+            <div class="header">
+                <div class="platform system"></div>
+                <div class="username">System</div>
+            </div>
+            <div class="message">채팅 접속 완료</div>
+        </div>
+        <div class="chat" data-userid="System" data-time="0">
+            <div class="header">
+                <div class="platform chzzk"></div>
+                <div class="username">CHZZK</div>
+            </div>
+            <div class="message">치지직</div>
+        </div>
+        <div class="chat" data-userid="System" data-time="0">
+            <div class="header">
+                <div class="platform youtube"></div>
+                <div class="username">YouTube</div>
+            </div>
+            <div class="message">유튜브</div>
+        </div>
+        <div class="chat" data-userid="System" data-time="0">
+            <div class="header">
+                <div class="platform twitch"></div>
+                <div class="username">Twitch</div>
+            </div>
+            <div class="message">트위치</div>
+        </div>
+    </div>
+</body>
+</html>
