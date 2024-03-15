@@ -33,6 +33,34 @@ img.twitch_emote {
 .dccon img {
 	max-height: 100px;
 }
+#chatWrap .chat .platform.chzzk {
+    display: inline-block;
+    margin-right: 5px;
+    background: transparent url(/img/icon-chzzk.png) no-repeat center center;
+    background-size: 16px 16px;
+    vertical-align: middle;
+}
+#chatWrap .chat .platform.youtube {
+    display: inline-block;
+    margin-right: 5px;
+    background: transparent url(/img/icon-youtube.png) no-repeat center center;
+    background-size: 16px 16px;
+    vertical-align: middle;
+}
+#chatWrap .chat .platform.twitch {
+    display: inline-block;
+    margin-right: 5px;
+    background: transparent url(/img/icon-twitch.png) no-repeat center center;
+    background-size: 16px 16px;
+    vertical-align: middle;
+}
+#chatWrap .chat .platform.kick {
+    display: inline-block;
+    margin-right: 5px;
+    background: transparent url(/img/icon-kick.png) no-repeat center center;
+    background-size: 16px 16px;
+    vertical-align: middle;
+}
 
 /* 좌우대칭 효과 */
 .dccon.dcconL {

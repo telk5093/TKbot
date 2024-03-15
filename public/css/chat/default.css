@@ -6,7 +6,6 @@
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
-
     margin-bottom: 10px;
 	border: 1px solid #616c7a;
 	padding: 4px;
@@ -15,7 +14,6 @@
 #chatWrap .chat:last-child {
     margin-bottom: 0;
 }
-
 #chatWrap .chat .header {
     display: flex;
     justify-content: flex-start;
