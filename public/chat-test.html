@@ -28,27 +28,84 @@
             </div>
             <div class="message">채팅 접속 완료</div>
         </div>
-        <div class="chat" data-userid="System" data-time="0">
-            <div class="header">
-                <div class="platform chzzk"></div>
-                <div class="username">CHZZK</div>
-            </div>
-            <div class="message">치지직</div>
-        </div>
-        <div class="chat" data-userid="System" data-time="0">
-            <div class="header">
-                <div class="platform youtube"></div>
-                <div class="username">YouTube</div>
-            </div>
-            <div class="message">유튜브</div>
-        </div>
-        <div class="chat" data-userid="System" data-time="0">
-            <div class="header">
-                <div class="platform twitch"></div>
-                <div class="username">Twitch</div>
-            </div>
-            <div class="message">트위치</div>
-        </div>
     </div>
+
+    <script>
+    let randomPlatform = {
+        'chzzk': 'CHZZK',
+        'youtube': '유튜브',
+        'twitch': '트위치',
+    };
+    let randomUserName1 = [
+        '겁쟁이',
+        '멋쟁이',
+        '우는',
+        '행복한',
+        '못된',
+        '멋진',
+        '예쁜',
+        '지나가는',
+        '골수',
+    ];
+    let randomUserName2 = [
+        '시청자',
+        '유저',
+        '나그네',
+        '사람',
+        '인간',
+        '트수',
+        '학생',
+        '아저씨',
+        '어린이',
+        '젊은이',
+        '외계인',
+    ];
+    let randomMessage = [
+        '테스트',
+        '안녕하세요',
+        '와!',
+        '이거 녹방인가요',
+        '!도움말',
+        'Hi',
+        'ㅎㅇㅎㅇ',
+        '치하트하유하',
+        '엄마 나 방송탔어',
+        '머야머야',
+        '~네다철',
+        '~농어1~농어2~농어3',
+        '전능하신아카라트여영원한빛으로날보호하소서거룩하신지혜로날이끄시고내가는길어둠에싸여있어도신성한빛으로내영혼을이끄소서전능하신아카라트여영원한빛으로날보호하소서거룩하신지혜로날이끄시고내가는길어둠에싸여있어도신성한빛으로내영혼을이끄소서',
+        '아니!',
+        '크~ ~펄럭',
+        'ㅇㅅㅇ',
+        'ㅋㅋㅋ',
+        'ㅋㅋㅋㅋㅋㅋ',
+        'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
+    ];
+    
+    function sendRandomVirtualMessage() {
+        let platformTmp = Object.keys(randomPlatform);
+        let platformTmpKey = platformTmp.sort(function(a, b) { return Math.random() - 0.5; })[0];
+        let platform = platformTmpKey;
+        let username1 = randomUserName1.sort(function(a, b) { return Math.random() - 0.5; })[0];
+        let username2 = randomUserName2.sort(function(a, b) { return Math.random() - 0.5; })[0];
+        let message = randomMessage.sort(function(a, b) { return Math.random() - 0.5; })[0];
+        let data = {
+            'isMod': (Math.random() >= 0.8) ? true : false,
+            'emotes': {},
+            'message': message,
+            'platform': platform,
+            'time': Math.floor((new Date()).getTime() / 1000),
+            'userid': 'test',
+            'username': username1 + ' ' + username2,
+        }
+        addMessage(data);
+        setTimeout(function() {
+            sendRandomVirtualMessage();
+        }, Math.round(Math.random() * 3000) + 500);
+    }
+    setTimeout(function() {
+        sendRandomVirtualMessage();
+    }, Math.round(Math.random() * 3000) + 100);
+    </script>
 </body>
 </html>
