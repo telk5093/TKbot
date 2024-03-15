@@ -52,8 +52,10 @@ var quit = exports.quit = (channelUid) => {
 
     if (chzzkClients[channelUid] && (typeof chzzkClients[channelUid].disconnect === 'function')) {
         console.log('[chzzk.js] Disconnectd from @%s', channelUid);
-        chzzkClients[channelUid].disconnect();
-        delete chzzkClients[channelUid];
+        if (chzzkClients[channelUid]) {
+            chzzkClients[channelUid].disconnect();
+            delete chzzkClients[channelUid];
+        }
     }
 };
 
