@@ -1,18 +1,6 @@
 @charset "utf-8";
 @import url(/css/chat/common.css);
 
-:root {
-    --box-border-bright: #b7c3c3;
-    --box-border-dark: #5b7373;
-    --box-background-color: #839797;
-    --box-border-up: var(--box-border-bright) var(--box-border-dark) var(--box-border-dark) var(--box-border-bright);
-    --box-border-down: var(--box-border-dark) var(--box-border-bright) var(--box-border-bright) var(--box-border-dark);
-}
-
-body {
-    background-color:#222222cc;
-}
-
 #chatWrap .chat {
     display: flex;
     flex-direction: row;
