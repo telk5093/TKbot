@@ -27,7 +27,7 @@ body {
 #chatWrap .chat .header {
     justify-content: flex-end;
     box-sizing: border-box;
-    flex-basis: 200px;
+    flex-basis: 10%;
     padding: 0;
     font-weight: bold;
     font-family: 'Noto Sans KR', sans-serif;
