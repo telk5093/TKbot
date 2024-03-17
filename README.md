@@ -26,3 +26,6 @@ TKbot은 [치지직](https://chzzk.naver.com)과 [Twitch](https://twitch.tv), [Y
 ## Twitch
 ``스트리머 대시보드 > 커뮤니티 > 역할 관리자``로 들어가서,  
 ``telkbot``에 ``매니저, 편집자`` 역할을 추가해주세요.
+
+# Thanks to
+[kimcore/chzzk](https://github.com/kimcore/chzzk)
