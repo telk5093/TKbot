@@ -137,19 +137,23 @@ router.post('/quit', (req, res) => {
 
         let platform = req.body.platform;
 
-        switch (platform) {
-            case 'chzzk':
-                modules['core/chzzk'].quit(channelUid);
-                break;
-            case 'youtube':
-                modules['core/youtube'].quit(channelUid);
-                break;
-            case 'twitch':
-                modules['core/twitch'].quit(channelUid);
-                break;
-            // case 'kick':
-            //     modules['core/kick'].quit(channelUid);
-            //     break;
+        try {
+            switch (platform) {
+                case 'chzzk':
+                    modules['core/chzzk'].quit(channelUid);
+                    break;
+                case 'youtube':
+                    modules['core/youtube'].quit(channelUid);
+                    break;
+                case 'twitch':
+                    modules['core/twitch'].quit(channelUid);
+                    break;
+                // case 'kick':
+                //     modules['core/kick'].quit(channelUid);
+                //     break;
+            }
+        } catch (e2) {
+            throw 'Fail to quit';
         }
 
         res.writeHead(200, {'Content-Type': 'text/json; charset=utf-8'});
