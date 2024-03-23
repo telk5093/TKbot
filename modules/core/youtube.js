@@ -27,6 +27,7 @@ var init = exports.init = (data) => {
             continue;
         }
 
+        connect(_channelUid, _channelId);
     }
 }
 
