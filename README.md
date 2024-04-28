@@ -1,5 +1,6 @@
 # TKbot
 TKbot은 [치지직](https://chzzk.naver.com)과 [Twitch](https://twitch.tv), [YouTube Live](https://www.youtube.com/live)를 지원하는 실시간 스트리밍 용 봇입니다.  
+YouTube는 아직은 메시지 수신만 가능하고 송신이 되지 않으며, 수신도 매우 불안정하여 사용을 그다지 권장하지 않습니다.   
 
 
 # 명령어
