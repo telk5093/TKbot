@@ -33,8 +33,8 @@ router.get('/settings', (req, res) => {
         'openttd.password': channelConfig.openttd?.password,
 
         'tts.enabled': true,   // channelConfig.tts.enabled > 0 ? true : false,
-        'tts.banword': channelConfig.tts.banword.join('\n'),
-        'tts.banuser': channelConfig.tts.banuser.join('\n'),
+        'tts.banword': (channelConfig.tts.banword ? channelConfig.tts.banword : []).join('\n'),
+        'tts.banuser': (channelConfig.tts.banuser ? channelConfig.tts.banuser : []).join('\n'),
     };
     let dataProcessed = {};
     for (let _key in data) {
