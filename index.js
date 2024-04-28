@@ -42,7 +42,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(session({
-    secret: 'tkbot48172_$%!',	// 원하는 문자 입력
+    secret: auth.sessionSecret,   // 원하는 문자 입력
     resave: false,
     saveUninitialized: true,
     store: new FileStore(),

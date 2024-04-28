@@ -38,4 +38,6 @@ var exports = module.exports = {
         clientSecret: '(GOOGLE OAUTH CLIENT SECRET)',
         redirectUri: 'http://localhost:27510/youtube/callback',
     },
+
+    sessionSecret: '(session secret key)',
 };
