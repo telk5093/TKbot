@@ -53,6 +53,35 @@ router.post('/signup', (req, res) => {
     let passwordCrypted = crypto.createHash('sha256').update('tkbot_' + password + '_bot312!').digest('hex');
     let new_channelConfig = {
         password: passwordCrypted,
+        channels: {
+            chzzk: null,
+            twitch: null,
+            youtube: null,
+            kick: null
+        },
+        chat: {
+            dccon: {
+                baseUrl: null,
+                js: null,
+                image: null
+            }
+        },
+        openttd: {
+            host: null,
+            port: null,
+            password: null
+        },
+        tts: {
+            enabled: true,
+            banword: [
+                "sex",
+                "cex"
+            ],
+            banuser: []
+        },
+        response: {
+            "!테스트": "!say 테스트 response"
+        },
         misc: {
             sign_ip: ip,
         }
