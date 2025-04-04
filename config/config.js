@@ -12,7 +12,7 @@ var exports = module.exports = {
     // Use https
     useHTTPS: true,
     httpsCredentials: {
-        key: '/key/privkey.pem',
-        cert: '/key/fullchain.pem',
+        key: '/etc/letsencrypt/live/bot.telk.kr/privkey.pem',
+        cert: '/etc/letsencrypt/live/bot.telk.kr/fullchain.pem',
     },
 };
