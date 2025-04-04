@@ -1,5 +1,6 @@
 var channelConfigTTS = {};
 var ttsQueue = [];
+window.debugmode = false;
 const config = {
     tts: {
         personality_speed: [1.2, 1.4],   // Speed에 관여
@@ -108,7 +109,7 @@ $(document).ready(async function() {
     // on message
     socket.on('data', (data) => {
         let username = String(data.username);
-        let message = data.message;
+        let message = String(data.message).trim();
 
         // 느낌표로 시작하는 메시지는 읽지 않음
         if (message.match(/^!.*/g)) {
@@ -251,6 +252,7 @@ $(document).ready(async function() {
             }
             msg.volume = 0.8;
             msg.onend = function (event) {
+                window.speechSynthesis.cancel();
                 if (window.debugmode) {
                     console.log('msg read event');
                 }
@@ -283,12 +285,14 @@ function playTTSinQueue() {
     // 재생할 TTS가 없으면 대기
     let ttsobj = ttsQueue.shift();
     if (typeof ttsobj === 'undefined') {
+        playTimeCount = 0;
         setTimeout(playTTSinQueue, 100);
         return;
     }
 
     let message = ttsobj.message;
     console.log('Say "%s"', message);
+    window.speechSynthesis.cancel();
     window.speechSynthesis.speak(ttsobj);
 
     setTimeout(playTTSinQueue, 100);
@@ -308,7 +312,7 @@ function cancelTTS() {
 }
 
 // 재생
-function playText(tttsobj) {
+function playText(ttsobj) {
     if (!('speechSynthesis' in window)) {
         console.error('There is no speechSynthesis!');
         return;
