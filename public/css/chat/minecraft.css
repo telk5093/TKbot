@@ -9,6 +9,7 @@
     margin-bottom: 10px;
 	border: 0;
 	padding: 0px;
+    line-height: 1em;
 	background-color: transparent;
 }
 #chatWrap .chat:last-child {
@@ -20,7 +21,7 @@
     align-items: center;
     box-sizing: border-box;
     width: 100%;
-    padding: 10px;
+    padding: 7px 10px 13px 10px;
     font-size: 16px;
     font-weight: bold;
     color: #e6e6e6;
