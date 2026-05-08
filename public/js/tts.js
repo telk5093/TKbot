@@ -225,16 +225,28 @@ $(document).ready(async function() {
 
             // 언어 목소리 선택
             let i = 0;
-            let voice_lang = null;
+            let voice_lang = 0;
             speechSynthesis.getVoices().forEach(function (voice) {
-                if (voice.name.indexOf('Google') >= 0 && voice.lang == lang) {
+                if (lang === 'ko-KR' && voice.lang === 'ko-KR') {
+                    if (voice_lang > 0) {
+                        return;
+                    }
+                    if (voice.name.includes('Google')) {
+                        voice_lang = i;
+                    // } else if (voice.name.includes('Hyunsu')) {
+                    //     voice_lang = i;
+                    } else if ((username == 'TELK' || username == '텔크') && voice.name.includes('InJoon')) {
+                        voice_lang = i;
+                    } else if (voice.name.includes('SunHi')) {
+                        voice_lang = i;
+                    } else if (voice.name.includes('Heami')) {
+                        voice_lang = i;
+                    }
+                } else if (voice.lang == lang) {
                     voice_lang = i;
                 }
                 i++;
             });
-            if (voice_lang === null) {
-                voice_lang = 0;
-            }
 
             // 재생
             let msg = new SpeechSynthesisUtterance(message);
@@ -243,8 +255,8 @@ $(document).ready(async function() {
             msg.from = username;
             msg.lang = lang;
             msg.voice = window.speechSynthesis.getVoices()[voice_lang];
-            msg.rate = p_speed;
-            msg.pitch = p_pitch;
+            msg.rate = p_speed;   // + 0.3;
+            msg.pitch = p_pitch;   // + 0.5;
             msg.onstart = function (event) {
                 if (typeof event.utterance.from == 'undefined' || event.utterance.from == '') {
                     event.utterance.from = 'Unknown';
@@ -275,11 +287,16 @@ $(document).ready(async function() {
 
 
 // 재생
+const maxPlayWatingTime = 10;
+var playWaitingTime = 0;
 function playTTSinQueue() {
     // TTS가 재생 중이면 대기
-    if (window.speechSynthesis.speaking) {
+    if (window.speechSynthesis.speaking/*  && playWaitingTime < maxPlayWatingTime * 100 / 10 */) {
+        playWaitingTime++;
         setTimeout(playTTSinQueue, 100);
         return;
+    // } else {
+    //     window.speechSynthesis.cancel();
     }
 
     // 재생할 TTS가 없으면 대기
@@ -291,9 +308,10 @@ function playTTSinQueue() {
     }
 
     let message = ttsobj.message;
-    console.log('Say "%s"', message);
+    console.log('%s: %s', ttsobj.from, message, ttsobj.voice);
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(ttsobj);
+    playWaitingTime = 0;
 
     setTimeout(playTTSinQueue, 100);
 }

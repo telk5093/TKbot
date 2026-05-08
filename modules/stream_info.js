@@ -157,13 +157,15 @@ var init = exports.init = async (data) => {
         // From chzzk
         if (channelConfig.channels.chzzk) {
             // Get stream information
-            let liveDetail = await data.callback.client.live.detail(data.to);
+            let liveDetail = await data.callback.client?.live?.detail(data.to);
 
-            let n = new Date();
-            let m = new Date(liveDetail.openDate);
-            if (liveDetail.openDate !== null && liveDetail.closeDate == null) {
-                second = Math.floor((n.getTime() - m.getTime()) / 1000);
-                since = lib.prettyDate(m).full_str;
+            if (liveDetail) {
+                let n = new Date();
+                let m = new Date(liveDetail.openDate);
+                if (liveDetail.openDate !== null && liveDetail.closeDate == null) {
+                    second = Math.floor((n.getTime() - m.getTime()) / 1000);
+                    since = lib.prettyDate(m).full_str;
+                }
             }
 
         // From twitch
