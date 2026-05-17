@@ -5,3 +5,4 @@ config/channels.json
 config/channels/*.json
 key/
 sessions/
+.env

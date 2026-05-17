@@ -23,6 +23,7 @@ router.get('/settings', (req, res) => {
         'youtube': channelConfig.channels?.youtube,
         'twitch': channelConfig.channels?.twitch,
         // 'kick': channelConfig.channels?.kick,
+        'cime': channelConfig.channels?.cime?.channelUid ? '연결됨' : '연결 안됨',
 
         'dccon.baseUrl': channelConfig.chat?.dccon?.baseUrl,
         'dccon.js': channelConfig.chat?.dccon?.js,

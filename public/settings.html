@@ -32,7 +32,7 @@
                 <col width="500" />
             </colgroup>
             <tbody>
-                <tr>
+                <tr data-platform="chzzk">
                     <td class="head">치지직</td>
                     <td class="body">
                         <input type="text" name="chzzk" placeholder="치지직 uid를 입력하세요 (eg. c6f75be90a32cac61524e91db7648f98)" value="{@data:chzzk}" />
@@ -41,7 +41,7 @@
                         <button type="button" class="small join">입장</button> <button type="button" class="small quit">퇴장</button>
                     </td>
                 </tr>
-                <tr>
+                <tr data-platform="youtube">
                     <td class="head">YouTube</td>
                     <td class="body">
                         <input type="text" name="youtube" placeholder="YouTube id를 입력하세요 (eg. UC0NExSLd9TFBcEX0ye8I1dw)" value="{@data:youtube}" />
@@ -50,7 +50,7 @@
                         <button type="button" class="small join">입장</button> <button type="button" class="small quit">퇴장</button>
                     </td>
                 </tr>
-                <tr>
+                <tr data-platform="twitch">
                     <td class="head">Twitch</td>
                     <td class="body">
                         <input type="text" name="twitch" placeholder="twitch id를 입력하세요 (eg. telk5093)" value="{@data:twitch}" />
@@ -59,11 +59,20 @@
                         <button type="button" class="small join">입장</button> <button type="button" class="small quit">퇴장</button>
                     </td>
                 </tr>
-                <!-- <tr>
+                <!-- <tr data-platform="kick">
                     <td class="head">Kick</td>
                     <td class="body"><input type="text" name="kick" placeholder="kick id를 입력하세요 (eg. telk5093)" value="{@data:kick}" /></td>
                     <td class="body"><button type="button" class="join">입장</button><button type="button" class="quit">퇴장</button></td>
                 </tr> -->
+                <tr data-platform="cime">
+                    <td class="head">ci.me (WIP)</td>
+                    <td class="body">
+                        {@data:cime}
+                    </td>
+                    <td class="body">
+                        <button type="button" class="small join">입장</button> <button type="button" class="small quit">퇴장</button>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <br />

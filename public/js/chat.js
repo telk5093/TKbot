@@ -115,8 +115,10 @@ function addMessage(data) {
                     break;
 
                 case 'twitch':
+                case 'cime':
                     message = message.replace(new RegExp(_emoteKey, 'ig'), '<img src="' + _emoteUrl + '" alt="' + _emoteKey + '" class="emote" />');
                     break;
+
                 default:
             }
         }
@@ -135,14 +137,21 @@ function addMessage(data) {
         case 'chzzk':
             chatbox_header_platform.addClass('chzzk');
             break;
+
         case 'youtube':
             chatbox_header_platform.addClass('youtube');
             break;
+
         case 'twitch':
             chatbox_header_platform.addClass('twitch');
             break;
+
         case 'kick':
             chatbox_header_platform.addClass('kick');
+            break;
+
+        case 'cime':
+            chatbox_header_platform.addClass('cime');
             break;
         default:
     }

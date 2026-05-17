@@ -28,7 +28,7 @@ $(document).ready(function() {
     // Join
     $('.join').click(function(e) {
         let _input = $(this).parent().siblings().eq(1).find('input');
-        let platform = _input.attr('name');
+        let platform = $(this).closest('tr').data('platform');
         let channelId = _input.val();
 
         $.ajax({
@@ -41,10 +41,15 @@ $(document).ready(function() {
             },
             success: function(rst) {
                 if (rst.state !== 'success') {
+                    console.warn(rst);
                     alert(rst.message);
                     return;
                 }
-                alert('TKbot이 ' + channelId + ' 채널에 입장하였습니다.');
+                if (platform === 'cime') {
+                    location.href = rst.moveTo;
+                } else {
+                    alert('TKbot이 ' + channelId + ' 채널에 입장하였습니다.');
+                }
             },
             error: function(xhr) {
                 console.error(xhr);
@@ -56,7 +61,7 @@ $(document).ready(function() {
     // Quit
     $('.quit').click(function(e) {
         let _input = $(this).parent().siblings().eq(1).find('input');
-        let platform = _input.attr('name');
+        let platform = $(this).closest('tr').data('platform');
         let channelId = _input.val();
 
         $.ajax({
@@ -71,11 +76,17 @@ $(document).ready(function() {
                     alert(rst.message);
                     return;
                 }
-                alert('TKbot이 ' + channelId + ' 채널에서 퇴장하였습니다.');
+                if (channelId) {
+                    alert('TKbot이 ' + channelId + ' 채널에서 퇴장하였습니다.');
+                } else {
+                    alert('TKbot이 퇴장하였습니다.');
+                    location.reload();
+                }
             },
             error: function(xhr) {
                 console.error(xhr);
-                alert(xhr.responseText);
+                let responseData = JSON.parse(xhr.responseText);
+                alert(responseData ? responseData.message : xhr.responseText);
             },
         });
     });

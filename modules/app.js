@@ -96,15 +96,23 @@ router.post('/join', (req, res) => {
             case 'chzzk':
                 modules['core/chzzk'].join(channelUid, channelId);
                 break;
+
             case 'youtube':
                 modules['core/youtube'].join(channelUid, channelId);
                 break;
+
             case 'twitch':
                 modules['core/twitch'].join(channelUid, channelId);
                 break;
+
             // case 'kick':
             //     modules['core/kick'].join(channelUid, channelId);
             //     break;
+
+            case 'cime':
+                modules['core/cime'].join(req, res);
+                return;
+                break;
         }
 
         res.writeHead(200, {'Content-Type': 'text/json; charset=utf-8'});
@@ -130,31 +138,38 @@ router.post('/quit', (req, res) => {
     let output = {};
     let channelUid = req.session.channelUid;
 
-    try {
+    // try {
         if (!channelUid) {
             throw 'Please login';
         }
 
         let platform = req.body.platform;
 
-        try {
+        // try {
             switch (platform) {
                 case 'chzzk':
                     modules['core/chzzk'].quit(channelUid);
                     break;
+
                 case 'youtube':
                     modules['core/youtube'].quit(channelUid);
                     break;
+
                 case 'twitch':
                     modules['core/twitch'].quit(channelUid);
                     break;
+
                 // case 'kick':
                 //     modules['core/kick'].quit(channelUid);
                 //     break;
+
+                case 'cime':
+                    modules['core/cime'].quit(channelUid);
+                    break;
             }
-        } catch (e2) {
-            throw 'Fail to quit';
-        }
+        // } catch (e2) {
+        //     throw 'Fail to quit: ' + e2;
+        // }
 
         res.writeHead(200, {'Content-Type': 'text/json; charset=utf-8'});
         output = {
@@ -162,13 +177,13 @@ router.post('/quit', (req, res) => {
             'message': 'Success to quit'
         };
 
-    } catch (e) {
-        res.writeHead(403, {'Content-Type': 'text/json; charset=utf-8'});
-        output = {
-            'state': 'error',
-            'message': e,
-        };
-    }
+    // } catch (e) {
+    //     res.writeHead(403, {'Content-Type': 'text/json; charset=utf-8'});
+    //     output = {
+    //         'state': 'error',
+    //         'message': e,
+    //     };
+    // }
     res.end(JSON.stringify(output));
 });
 

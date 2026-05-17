@@ -22,6 +22,12 @@ var exports = module.exports = {
         // kick: {
         //     id: '(Kick Bot ID)',
         // },
+
+        // ci.me
+        cime: {
+            clientId: '(ci.me Client ID)',
+            clientSecret: '(ci.me Client Secret)',
+        },
     },
 
     api: {
