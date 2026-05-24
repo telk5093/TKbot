@@ -85,7 +85,7 @@ var connect = exports.connect = async (channelUid, channelData) => {
         // db에서 불러온 refreshToken을 연결해 소켓 갱신 기능을 활성화합니다.
         const cimeChat = client.createEventClient({
             type: 'USER',
-            // refreshToken: tokenData.refreshToken,
+            refreshToken:  channelData.botToken.refreshToken,
         });
 
         // 라이프사이클 이벤트 리스너 등록
@@ -209,11 +209,7 @@ var quit = exports.quit = (channelUid) => {
     return;
 };
 
-// ====================================================================
-// 🌐 Express 라우터 및 서버 설정
-// ====================================================================
-
-// OAuth 콜백 라우트
+// OAuth 콜백
 app.get('/cime/oauth/callback', async (req, res) => {
     const code = req.query.code;
 
@@ -257,25 +253,3 @@ app.get('/cime/oauth/callback', async (req, res) => {
         res.status(500).send('인증 실패');
     }
 });
-
-// // 서버 시작
-// app.listen(443, async () => {
-//     console.log(`🚀 Server is running on http://${config.hostName}`);
-//     console.log(`🔑 OAuth 인증을 위해 브라우저에서 다음 URL로 이동하세요:`);
-//     console.log(`👉 https://ci.me/auth/openapi/account-interlock?clientId=${auth.bot.cime.clientId}&redirectUri=http://${config.hostName}/oauth/callback&state=${rand(100000, 999999)}`)
-
-//     // 서버가 켜질 때 db.json에 기존 토큰이 있는지 확인
-//     /*const dbData = await getDbData();
-
-//     if (dbData && dbData.botToken) {
-//         console.log('📂 db.json에서 기존 토큰을 발견했습니다. 봇을 자동으로 시작합니다...');
-//         runBot(dbData.botToken);
-//     } else {
-//         console.log(`⚠️ 저장된 봇 토큰이 없습니다. 브라우저에서 인증을 진행해주세요.`);
-//         console.log(`👉 https://ci.me/auth/openapi/account-interlock?clientId=${auth.bot.cime.clientId}&redirectUri=http://${config.hostName}/oauth/callback&state=${rand(100000, 999999)}`);
-//     }*/
-// });
-
-function rand(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}

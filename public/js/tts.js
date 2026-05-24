@@ -197,11 +197,11 @@ $(document).ready(async function() {
 
             // #(int)는 읽지 않음
             message = message.replace(/^#([0-9]+)/g, '');
+            message = message.replace(/(.)\1{9,}/g, '');   // 이외 모든 글자가 10번 이상 연속으로 있으면 삭제(읽지 않음)
             message = message.replace(/[\[\]\(\)\{\}<>]/g, '');   // ? [ ] { } ( )는 읽지 않음
             message = message.replace(/\ud83d[\ude00-\ude4f]/g, '');   // 이모지는 읽지 않음
             message = message.replace(/~{2,}/g, '~');   // 물결표는 한번만 읽음
             message = message.replace(/(키읔){3,}/g, '키읔키읔키읔');   // ㅋ이 3번 이상 있으면 3번만 읽음
-            message = message.replace(/(.)\1{9,}/g, '');   // 이외 모든 글자가 10번 이상 연속으로 있으면 삭제(읽지 않음)
             message = message.replace(/SSSsss/g, '');   // 트위치 크리퍼 이모티콘 SSSsss는 읽지 않음
             message = message.replace(/&(.*?);/g, '');   // &~~~;와 같은 엔티티 문자는 읽지 않음
 
