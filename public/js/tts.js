@@ -215,7 +215,7 @@ $(document).ready(async function() {
 
             if (/[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/.test(message)) {   // 한국어
                 lang = 'ko-KR';
-            } else if (/[\u3040-\u30ff\u31f0-\u31ff]/.test(message)) {   // 일본어
+            } else if (/[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}]/u.test(message)) {   // 일본어
                 lang = 'ja-JP';
             } else if (/[\u0400-\u04FF]/.test(message)) {   // 러시아어
                 lang = 'ru-RU';
