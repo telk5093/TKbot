@@ -170,7 +170,7 @@ var connect = exports.connect = async (channelUid, channelData) => {
             await cimeChat.subscribe('DONATION');
 
             // 장기간 채팅이 없는 경우를 대비하여 간단한 ping/ping 처리
-            setInterval(() => {
+            setInterval(async () => {
                 await client.chat.sendMessage({
                     message: '!현재 시각: ' + (new Date(Date.now() + 9 * 3600 * 1000).toISOString().split('T').join(' ').replace(/\.(\d+)Z$/, '')),
                 });
