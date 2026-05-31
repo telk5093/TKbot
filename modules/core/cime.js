@@ -86,7 +86,7 @@ var connect = exports.connect = async (channelUid, channelData) => {
         const cimeChat = client.createEventClient({
             type: 'USER',
             refreshToken:  channelData.botToken.refreshToken,
-            pingInterval: 60 * 1000,   // 5분마다 토큰 갱신 시도 (기본값 60000ms = 1분)
+            pingInterval: 2 * 60 * 1000,   // 5분마다 토큰 갱신 시도 (기본값 60000ms = 1분)
         });
 
         // 라이프사이클 이벤트 리스너 등록
@@ -153,8 +153,6 @@ var connect = exports.connect = async (channelUid, channelData) => {
                     'method': 'sendMessage',
                     'client': client,
                 });
-
-                // console.log(`💬 [채팅] ${data.profile.nickname}: ${data.content}`);
             });
 
             // [실시간 후원 수신]
@@ -168,14 +166,6 @@ var connect = exports.connect = async (channelUid, channelData) => {
             await cimeChat.connect();
             await cimeChat.subscribe('CHAT');
             await cimeChat.subscribe('DONATION');
-
-            // 장기간 채팅이 없는 경우를 대비하여 간단한 ping/ping 처리
-            setInterval(async () => {
-                await client.chat.sendMessage({
-                    message: '!현재 시각: ' + (new Date(Date.now() + 9 * 3600 * 1000).toISOString().split('T').join(' ').replace(/\.(\d+)Z$/, '')),
-                });
-                console.log('🤖 [봇 응답] pong! 을 전송했습니다.');
-            }, 5 * 60 * 1000);   // 5분마다
 
             cimeClients[channelUid] = cimeChat;
 
