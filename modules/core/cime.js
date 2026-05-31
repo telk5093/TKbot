@@ -79,13 +79,14 @@ var connect = exports.connect = async (channelUid, channelData) => {
         cimeConfigData.channelUid = me.channelName;
         cimeConfigData.channelId = me.channelId;
 
-        const liveStatus = await client.live.getLiveStatus(me.channelId);
+        // const liveStatus = await client.live.getLiveStatus(me.channelId);
         // console.log(`📺 현재 라이브 상태: ${liveStatus.isLive ? '방송 중 🟢' : '오프라인 🔴'}`);
 
         // db에서 불러온 refreshToken을 연결해 소켓 갱신 기능을 활성화합니다.
         const cimeChat = client.createEventClient({
             type: 'USER',
             refreshToken:  channelData.botToken.refreshToken,
+            pingInterval: 60 * 1000,   // 5분마다 토큰 갱신 시도 (기본값 60000ms = 1분)
         });
 
         // 라이프사이클 이벤트 리스너 등록
@@ -94,7 +95,7 @@ var connect = exports.connect = async (channelUid, channelData) => {
                 console.log('[cime.js] Connected to @%s (#%s)', me.channelName, me.channelId);
             });
             cimeChat.on('disconnected', () => {
-                console.log('[cime.js] Disconnectd from @%s', channelUid);
+                console.log('[cime.js] Disconnected from @%s', channelUid);
             });
             cimeChat.on('error', (err) => {
                 console.error('[cime.js] Websocket error:', err);
@@ -106,15 +107,15 @@ var connect = exports.connect = async (channelUid, channelData) => {
                 // if (chat.hidden) {
                 //     return;
                 // }
-        
+
                 let username = data.profile.nickname;
                 let userid = username;  //chat.profile.userIdHash;
                 let message = data.content;
                 let isMod = (data.profile.badges.id === 'MANAGER' ? true : false);   // Not sure
                 let isStreamer = (data.profile.badges.id === 'STREAMER' ? true : false);
-        
+
                 console.log('[ci.me] @' + cimeConfigData.channelUid + ' <' + username + '> ' + message);
-        
+
                 // Add user
                 if (!(userid in userList)) {
                     // let following = null;
@@ -130,13 +131,13 @@ var connect = exports.connect = async (channelUid, channelData) => {
                         'isStreamer': isStreamer,
                     };
                 }
-        
+
                 // emoji 파싱
                 let emotes = {};
                 if (data.emojis && Object.keys(data.emojis).length > 0) {
                     emotes = data.emojis;
                 }
-        
+
                 // Send a chat message
                 modules['core/chat'].send({
                     'platform': 'cime',
@@ -153,7 +154,6 @@ var connect = exports.connect = async (channelUid, channelData) => {
                     'client': client,
                 });
 
-
                 // console.log(`💬 [채팅] ${data.profile.nickname}: ${data.content}`);
             });
 
@@ -169,7 +169,14 @@ var connect = exports.connect = async (channelUid, channelData) => {
             await cimeChat.subscribe('CHAT');
             await cimeChat.subscribe('DONATION');
 
-            
+            // 장기간 채팅이 없는 경우를 대비하여 간단한 ping/ping 처리
+            setInterval(() => {
+                await client.chat.sendMessage({
+                    message: '!현재 시각: ' + (new Date(Date.now() + 9 * 3600 * 1000).toISOString().split('T').join(' ').replace(/\.(\d+)Z$/, '')),
+                });
+                console.log('🤖 [봇 응답] pong! 을 전송했습니다.');
+            }, 5 * 60 * 1000);   // 5분마다
+
             cimeClients[channelUid] = cimeChat;
 
         } catch (error) {
@@ -202,7 +209,7 @@ var quit = exports.quit = (channelUid) => {
     lib.saveChannelConfig(channelUid, channelConfig);
 
     if (cimeClients[channelUid] && (typeof cimeClients[channelUid].disconnect === 'function')) {
-        console.log('[cime.js] Disconnectd from @%s', channelUid);
+        console.log('[cime.js] Disconnected from @%s', channelUid);
         cimeClients[channelUid].disconnect();
         delete cimeClients[channelUid];
     }
@@ -248,6 +255,7 @@ app.get('/cime/oauth/callback', async (req, res) => {
 
         // 인증 성공 후 /settings로 리다이렉트
         res.redirect('https://bot.telk.kr/settings');
+
     } catch (error) {
         console.error('❌ OAuth 인증 또는 DB 저장 중 오류 발생:', error);
         res.status(500).send('인증 실패');
